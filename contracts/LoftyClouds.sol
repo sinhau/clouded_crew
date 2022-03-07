@@ -38,7 +38,7 @@ contract LoftyClouds is ERC1155, Ownable {
         0x86cC8121b46F6b7f8a2213C89087ad7741F8542A; //TODO: Create splits contract at 0xsplits.xyz before mainnet deployment
 
     /**
-     * NOTE: Set base metadata URI to unrevealed metadata during contract deployment. Once all NFTs have been minted, contract owner will update base metadata URI to point to the actual metadata.  To ensure that metadata for each NFT was set prior to contract deployment, we have stored the provenance hash of all metadata JSON files in the contract as METADATA_PROVENANCE_HASH.  This provenance hash was computed by hashing the combined (string concatanation) hash of JSON metadata object for each NFT in order from 1 to MAX_NFT_SUPPLY.
+     * NOTE: Setting base metadata URI to unrevealed metadata during contract deployment. Once all NFTs have been minted, contract owner will update base metadata URI to point to the actual metadata.  To ensure that metadata for each NFT was set prior to contract deployment, we have stored the provenance hash of all metadata JSON files in the contract as METADATA_PROVENANCE_HASH.  This provenance hash was computed by hashing a list of hashes of JSON metadata object for each NFT in order from 1 to MAX_NFT_SUPPLY.  This was done in Python using the web3.solidityKeccak method
      */
     // constructor(address _proxyRegistryAddress)
     constructor()
