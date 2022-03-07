@@ -11,22 +11,15 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
-contract OwnableDelegateProxy {}
+// contract OwnableDelegateProxy {}
 
-contract ProxyRegistry {
-    mapping(address => OwnableDelegateProxy) public proxies;
-}
+// contract ProxyRegistry {
+//     mapping(address => OwnableDelegateProxy) public proxies;
+// }
 
 contract LoftyClouds is ERC1155, Ownable {
-    address proxyRegistryAddress;
+    // address proxyRegistryAddress;
     string public name;
-    string public symbol;
-
-    /**
-     * NOTE: Set base metadata URI to unrevealed metadata during contract deployment. Once all NFTs have been minted, contract owner will update base metadata URI to point to the actual metadata.  To ensure that metadata for each NFT was set prior to contract deployment, we have stored the provenance hash of all metadata JSON files in the contract as METADATA_PROVENANCE_HASH.  This provenance hash was computed by hashing the combined (string concatanation) hash of JSON metadata object for each NFT in order from 1 to MAX_NFT_SUPPLY.
-     */
-    string public metadataURI =
-        "https://gateway.pinata.cloud/ipfs/Qmaxqbo2ZDBRYv7Ukw7L9B7dq2vUQqB1ysH6x5CLcDAVPa/";
 
     //---------------------
     // CONSTANTS
@@ -35,7 +28,7 @@ contract LoftyClouds is ERC1155, Ownable {
         "0x27df45b83a96bcb75c7dc6918f12fdc22120b800930ae129b3f18bfae68fb232"; //TODO: Create metadata provenance hash and store it here
     uint256 public constant MAX_NFT_SUPPLY = 3333;
     uint256 public constant MAX_MINT_AMOUNT_PER_TRANSACTION = 3;
-    uint256 public constant MINTING_FEE = 0.0333 ether;
+    uint256 public constant MINTING_FEE = 0.03 ether;
 
     //---------------------
     // PRIVATE VARS
@@ -44,10 +37,17 @@ contract LoftyClouds is ERC1155, Ownable {
     address private constant _SPLITS_CONTRACT =
         0x86cC8121b46F6b7f8a2213C89087ad7741F8542A; //TODO: Create splits contract at 0xsplits.xyz before mainnet deployment
 
-    constructor(address _proxyRegistryAddress) ERC1155(metadataURI) {
-        proxyRegistryAddress = _proxyRegistryAddress;
-        name = "LoftyClouds";
-        symbol = "KLOUDS";
+    /**
+     * NOTE: Set base metadata URI to unrevealed metadata during contract deployment. Once all NFTs have been minted, contract owner will update base metadata URI to point to the actual metadata.  To ensure that metadata for each NFT was set prior to contract deployment, we have stored the provenance hash of all metadata JSON files in the contract as METADATA_PROVENANCE_HASH.  This provenance hash was computed by hashing the combined (string concatanation) hash of JSON metadata object for each NFT in order from 1 to MAX_NFT_SUPPLY.
+     */
+    // constructor(address _proxyRegistryAddress)
+    constructor()
+        ERC1155(
+            "https://gateway.pinata.cloud/ipfs/Qmaxqbo2ZDBRYv7Ukw7L9B7dq2vUQqB1ysH6x5CLcDAVPa/"
+        )
+    {
+        // proxyRegistryAddress = _proxyRegistryAddress;
+        name = "Lofty Clouds";
     }
 
     /**
@@ -81,7 +81,7 @@ contract LoftyClouds is ERC1155, Ownable {
         _mintBatch(_to, _ids, _numTokens, _data);
     }
 
-    function withdrawAll() external payable onlyOwner {
+    function withdrawFullBalance() external payable onlyOwner {
         payable(_SPLITS_CONTRACT).transfer(address(this).balance);
     }
 
@@ -89,7 +89,7 @@ contract LoftyClouds is ERC1155, Ownable {
      * @dev Generate contract metadata URI
      */
     function contractURI() external view returns (string memory) {
-        return string(abi.encodePacked(metadataURI, "contractMetadata.json"));
+        return string(abi.encodePacked(super.uri(1), "contractMetadata.json"));
     }
 
     /**
@@ -102,10 +102,12 @@ contract LoftyClouds is ERC1155, Ownable {
         override
         returns (string memory)
     {
+        require(_tokenID > 0, "Token ID must be greater than 0");
+        require(_tokenID < _currentTokenID, "Token ID hasn't been minted yet");
         return
             string(
                 abi.encodePacked(
-                    metadataURI,
+                    super.uri(_tokenID),
                     Strings.toString(_tokenID),
                     ".json"
                 )
@@ -120,26 +122,26 @@ contract LoftyClouds is ERC1155, Ownable {
         external
         onlyOwner
     {
-        metadataURI = _newBaseMetadataURI;
+        _setURI(_newBaseMetadataURI);
     }
 
-    /**
-     * Override isApprovedForAll to whitelist user's OpenSea proxy accounts to enable gas-free listings.
-     */
-    function isApprovedForAll(address _owner, address _operator)
-        public
-        view
-        override
-        returns (bool isOperator)
-    {
-        // Whitelist OpenSea proxy contract for easy trading.
-        ProxyRegistry proxyRegistry = ProxyRegistry(proxyRegistryAddress);
-        if (address(proxyRegistry.proxies(_owner)) == _operator) {
-            return true;
-        }
+    // /**
+    //  * Override isApprovedForAll to whitelist user's OpenSea proxy accounts to enable gas-free listings.
+    //  */
+    // function isApprovedForAll(address _owner, address _operator)
+    //     public
+    //     view
+    //     override
+    //     returns (bool isOperator)
+    // {
+    //     // Whitelist OpenSea proxy contract for easy trading.
+    //     ProxyRegistry proxyRegistry = ProxyRegistry(proxyRegistryAddress);
+    //     if (address(proxyRegistry.proxies(_owner)) == _operator) {
+    //         return true;
+    //     }
 
-        return ERC1155.isApprovedForAll(_owner, _operator);
-    }
+    //     return ERC1155.isApprovedForAll(_owner, _operator);
+    // }
 
     bytes4 private constant INTERFACE_SIGNATURE_ERC165 = 0x01ffc9a7;
     bytes4 private constant INTERFACE_SIGNATURE_ERC1155 = 0xd9b67a26;
