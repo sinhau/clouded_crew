@@ -10,6 +10,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
+import "@openzeppelin/contracts/utils/math/Math.sol";
 
 // contract OwnableDelegateProxy {}
 
@@ -27,6 +28,7 @@ contract LoftyClouds is ERC1155, Ownable {
     string public constant METADATA_PROVENANCE_HASH =
         "0x27df45b83a96bcb75c7dc6918f12fdc22120b800930ae129b3f18bfae68fb232"; //TODO: Create metadata provenance hash and store it here
     uint256 public constant MAX_NFT_SUPPLY = 3333;
+    uint256 public constant FREE_NFT_SUPPLY = 333;
     uint256 public constant MAX_MINT_AMOUNT_PER_TRANSACTION = 3;
     uint256 public constant MINTING_FEE = 0.03 ether;
 
@@ -57,17 +59,26 @@ contract LoftyClouds is ERC1155, Ownable {
      */
     function batchMint(address _to, uint256 _quantity) external payable {
         require(
-            _quantity <= MAX_MINT_AMOUNT_PER_TRANSACTION,
-            "Cannot many more than 3 NFTs per transaction"
+            _quantity > 0 && _quantity <= MAX_MINT_AMOUNT_PER_TRANSACTION,
+            "Too many NFTs being minted"
         );
         require(
             _quantity + _currentTokenID - 1 <= MAX_NFT_SUPPLY,
             "Not enought NFT supply left to mint"
         );
+        // if (_currentTokenID >= FREE_NFT_SUPPLY - MAX_MINT_AMOUNT_PER_TRANSACTION + 2 && _currentTokenID <= FREE_NFT_SUPPLY) {
+        //     require(
+        //         msg.value >=
+        //             MINTING_FEE *
+        //                 Math.max((_quantity + _currentTokenID - FREE_NFT_SUPPLY - 1), 0),
+        //         "Not enough ETH to pay for minting fee"
+        //     );
+        // } else {
         require(
             msg.value >= _quantity * MINTING_FEE,
             "Insuficient ETH to mint"
         );
+        // }
 
         bytes memory _data;
         uint256[] memory _ids = new uint256[](_quantity);
