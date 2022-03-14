@@ -57,8 +57,8 @@ describe("LoftyClouds", function () {
     it("Should not be able to mint if address is not whitelisted", async function () {
       await expect(
         this.contract.mintPresale(
-          this.owner.address,
-          this.merkleTree.getHexProof(keccak256(this.owner.address))
+          this.accounts[1].address,
+          this.merkleTree.getHexProof(keccak256(this.accounts[1].address))
         )
       ).to.be.revertedWith("Minting address is not on whitelist");
 
@@ -74,13 +74,13 @@ describe("LoftyClouds", function () {
     it("Should not be able to mint more than 333 presale NFTs and only mint one per wallet", async function () {
       await expect(
         this.contract.mintPresale(
-          this.owner.address,
-          this.merkleTree.getHexProof(keccak256(this.owner.address))
+          this.accounts[1].address,
+          this.merkleTree.getHexProof(keccak256(this.accounts[1].address))
         )
       ).to.be.revertedWith("Minting address is not on whitelist");
 
       for (let i = 1; i <= 333; i++) {
-        address = this.whitelist[i-1];
+        address = this.whitelist[i - 1];
         expect(await this.contract.balanceOf(address, i)).to.equal(0);
         await this.contract.mintPresale(
           address,
@@ -97,8 +97,8 @@ describe("LoftyClouds", function () {
 
       await expect(
         this.contract.mintPresale(
-          this.owner.address,
-          this.merkleTree.getHexProof(keccak256(this.owner.address))
+          this.accounts[1].address,
+          this.merkleTree.getHexProof(keccak256(this.accounts[1].address))
         )
       ).to.be.revertedWith("Presale NFTs sold out");
     });
