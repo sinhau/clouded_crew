@@ -26,23 +26,97 @@ describe("LoftyClouds", function () {
   });
 
   describe("Minting", function () {
-    it("Should be able to mint 1 NFT", async function () {
+    it("Should not be able to mint presale NFT if presale or sale is not active", async function () {
+      await this.contract.updatePresaleStatus(false);
+      await expect(
+        this.contract.mintPresale(this.owner.address)
+      ).to.be.revertedWith("Presale is not active");
+
+      await this.contract.updatePresaleStatus(true);
+      await this.contract.updateSalePausedStatus(true);
+      await expect(
+        this.contract.mintPresale(this.owner.address)
+      ).to.be.revertedWith("NFT sale is paused");
+    });
+
+    it("Should not be able to mint more than 333 presale NFTs and only mint one per wallet", async function () {
+      for (let i = 1; i <= 333; i++) {
+        newAccount = ethers.Wallet.createRandom();
+        expect(await this.contract.balanceOf(newAccount.address, i)).to.equal(
+          0
+        );
+        await this.contract.mintPresale(newAccount.address);
+        expect(await this.contract.balanceOf(newAccount.address, i)).to.equal(
+          1
+        );
+        await expect(
+          this.contract.mintPresale(newAccount.address)
+        ).to.be.revertedWith("Already minted presale for this address");
+      }
+
+      newAccount = ethers.Wallet.createRandom();
+      await expect(
+        this.contract.mintPresale(newAccount.address)
+      ).to.be.revertedWith("Presale NFTs sold out");
+    });
+
+    it("Should not be able to mint regular NFTs if presale is active or sale is paused", async function () {
+      await expect(
+        this.contract.batchMint(this.owner.address, 1)
+      ).to.be.revertedWith("Presale is active");
+
+      await this.contract.updatePresaleStatus(false);
+      await this.contract.updateSalePausedStatus(true);
+      await expect(
+        this.contract.batchMint(this.owner.address, 1)
+      ).to.be.revertedWith("NFT sale is paused");
+    });
+
+    it("Should be able to mint up to only 3 regular NFTs at a time with the right payment being made", async function () {
+      await this.contract.updatePresaleStatus(false);
+
+      expect(await this.contract.balanceOf(this.owner.address, 1)).to.equal(0);
+      await expect(
+        this.contract.batchMint(this.owner.address, 1, {
+          value: ethers.utils.parseEther("0.02"),
+        })
+      ).to.be.revertedWith("Insufficient ETH to mint");
       await this.contract.batchMint(this.owner.address, 1, {
         value: ethers.utils.parseEther("0.03"),
       });
       expect(await this.contract.balanceOf(this.owner.address, 1)).to.equal(1);
-      expect(await this.contract.balanceOf(this.owner.address, 2)).to.equal(0);
-    });
 
-    it("Should not be able to mint more than 3 NFTs in single transaction", async function () {
       await expect(
-        this.contract.batchMint(this.owner.address, 4, {
-          value: ethers.utils.parseEther("0.12"),
+        this.contract.batchMint(this.owner.address, 2, {
+          value: ethers.utils.parseEther("0.02"),
         })
+      ).to.be.revertedWith("Insufficient ETH to mint");
+      await this.contract.batchMint(this.owner.address, 2, {
+        value: ethers.utils.parseEther("0.06"),
+      });
+      expect(await this.contract.balanceOf(this.owner.address, 2)).to.equal(1);
+      expect(await this.contract.balanceOf(this.owner.address, 3)).to.equal(1);
+
+      await expect(
+        this.contract.batchMint(this.owner.address, 3, {
+          value: ethers.utils.parseEther("0.02"),
+        })
+      ).to.be.revertedWith("Insufficient ETH to mint");
+      await this.contract.batchMint(this.owner.address, 3, {
+        value: ethers.utils.parseEther("0.09"),
+      });
+      expect(await this.contract.balanceOf(this.owner.address, 4)).to.equal(1);
+      expect(await this.contract.balanceOf(this.owner.address, 5)).to.equal(1);
+      expect(await this.contract.balanceOf(this.owner.address, 6)).to.equal(1);
+
+      await expect(
+        this.contract.batchMint(this.owner.address, 7)
       ).to.be.revertedWith("Too many NFTs being minted");
     });
 
     it("Should not be able to mint more than 3333 NFTs", async function () {
+      await this.contract.updatePresaleStatus(false);
+
       for (let i = 0; i < 1111; i++) {
         await this.contract.batchMint(this.owner.address, 3, {
           value: ethers.utils.parseEther("0.09"),
@@ -76,6 +150,8 @@ describe("LoftyClouds", function () {
     });
 
     it("Should provide valid NFT metadata URI for minted NFTs only", async function () {
+      await this.contract.updatePresaleStatus(false);
+
       await expect(this.contract.uri(1)).to.be.revertedWith(
         "Token ID hasn't been minted yet"
       );
