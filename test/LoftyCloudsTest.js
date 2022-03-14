@@ -1,5 +1,7 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+const { MerkleTree } = require("merkletreejs");
+const keccak256 = require("keccak256");
 
 describe("LoftyClouds", function () {
   before(async function () {
@@ -7,11 +9,18 @@ describe("LoftyClouds", function () {
     this.owner = this.accounts[0];
     this.baseMetadataURI =
       "https://gateway.pinata.cloud/ipfs/Qmaxqbo2ZDBRYv7Ukw7L9B7dq2vUQqB1ysH6x5CLcDAVPa/";
+
+    this.whitelist = require("../whitelist.json");
+
+    const leafNodes = this.whitelist.map((address) => keccak256(address));
+    this.merkleTree = new MerkleTree(leafNodes, keccak256, {
+      sortPairs: true,
+    });
   });
 
   beforeEach(async function () {
     const contractFactory = await ethers.getContractFactory("LoftyClouds");
-    this.contract = await contractFactory.deploy();
+    this.contract = await contractFactory.deploy(this.merkleTree.getHexRoot());
   });
 
   describe("Deployment", function () {
@@ -29,34 +38,68 @@ describe("LoftyClouds", function () {
     it("Should not be able to mint presale NFT if presale or sale is not active", async function () {
       await this.contract.updatePresaleStatus(false);
       await expect(
-        this.contract.mintPresale(this.owner.address)
+        this.contract.mintPresale(
+          this.owner.address,
+          this.merkleTree.getProof(keccak256(this.owner.address))
+        )
       ).to.be.revertedWith("Presale is not active");
 
       await this.contract.updatePresaleStatus(true);
       await this.contract.updateSalePausedStatus(true);
       await expect(
-        this.contract.mintPresale(this.owner.address)
+        this.contract.mintPresale(
+          this.owner.address,
+          this.merkleTree.getProof(keccak256(this.owner.address))
+        )
       ).to.be.revertedWith("NFT sale is paused");
     });
 
+    it("Should not be able to mint if address is not whitelisted", async function () {
+      await expect(
+        this.contract.mintPresale(
+          this.owner.address,
+          this.merkleTree.getHexProof(keccak256(this.owner.address))
+        )
+      ).to.be.revertedWith("Minting address is not on whitelist");
+
+      const address = this.whitelist[1];
+      expect(await this.contract.balanceOf(address, 1)).to.equal(0);
+      await this.contract.mintPresale(
+        address,
+        this.merkleTree.getHexProof(keccak256(address))
+      );
+      expect(await this.contract.balanceOf(address, 1)).to.equal(1);
+    });
+
     it("Should not be able to mint more than 333 presale NFTs and only mint one per wallet", async function () {
+      await expect(
+        this.contract.mintPresale(
+          this.owner.address,
+          this.merkleTree.getHexProof(keccak256(this.owner.address))
+        )
+      ).to.be.revertedWith("Minting address is not on whitelist");
+
       for (let i = 1; i <= 333; i++) {
-        newAccount = ethers.Wallet.createRandom();
-        expect(await this.contract.balanceOf(newAccount.address, i)).to.equal(
-          0
+        address = this.whitelist[i-1];
+        expect(await this.contract.balanceOf(address, i)).to.equal(0);
+        await this.contract.mintPresale(
+          address,
+          this.merkleTree.getHexProof(keccak256(address))
         );
-        await this.contract.mintPresale(newAccount.address);
-        expect(await this.contract.balanceOf(newAccount.address, i)).to.equal(
-          1
-        );
+        expect(await this.contract.balanceOf(address, i)).to.equal(1);
         await expect(
-          this.contract.mintPresale(newAccount.address)
+          this.contract.mintPresale(
+            address,
+            this.merkleTree.getHexProof(keccak256(address))
+          )
         ).to.be.revertedWith("Already minted presale for this address");
       }
 
-      newAccount = ethers.Wallet.createRandom();
       await expect(
-        this.contract.mintPresale(newAccount.address)
+        this.contract.mintPresale(
+          this.owner.address,
+          this.merkleTree.getHexProof(keccak256(this.owner.address))
+        )
       ).to.be.revertedWith("Presale NFTs sold out");
     });
 

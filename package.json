@@ -8,7 +8,8 @@
     "ethers": "^5.5.4",
     "hardhat": "^2.9.1",
     "hardhat-gas-reporter": "^1.0.8",
-    "keccak256": "^1.0.6"
+    "keccak256": "^1.0.6",
+    "merkletreejs": "^0.2.31"
   },
   "dependencies": {
     "@alch/alchemy-web3": "^1.2.5",

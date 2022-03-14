@@ -11,6 +11,7 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 // contract OwnableDelegateProxy {}
 
@@ -39,6 +40,7 @@ contract LoftyClouds is ERC1155, Ownable {
     uint256 public constant FREE_NFT_SUPPLY = 333;
     uint256 public constant MAX_MINT_AMOUNT_PER_TRANSACTION = 3;
     uint256 public constant MINTING_FEE = 0.03 ether;
+    bytes32 public immutable WHITELIST_MERKLE_TREE_ROOT;
 
     //---------------------
     // PRIVATE VARS
@@ -50,20 +52,22 @@ contract LoftyClouds is ERC1155, Ownable {
      * NOTE: Setting base metadata URI to unrevealed metadata during contract deployment. Once all NFTs have been minted, contract owner will update base metadata URI to point to the actual metadata.  To ensure that metadata for each NFT was set prior to contract deployment, we have stored the provenance hash of all metadata JSON files in the contract as METADATA_PROVENANCE_HASH.  This provenance hash was computed by hashing a list of hashes of JSON metadata object for each NFT in order from 1 to MAX_NFT_SUPPLY.  This was done in Python using the web3.solidityKeccak method
      */
     // constructor(address _proxyRegistryAddress)
-    constructor()
+    constructor(bytes32 _WHITELIST_MERKLE_TREE_ROOT)
         ERC1155(
             "https://gateway.pinata.cloud/ipfs/Qmaxqbo2ZDBRYv7Ukw7L9B7dq2vUQqB1ysH6x5CLcDAVPa/"
         )
     {
         // proxyRegistryAddress = _proxyRegistryAddress;
         name = "Lofty Clouds";
+        WHITELIST_MERKLE_TREE_ROOT = _WHITELIST_MERKLE_TREE_ROOT;
     }
 
     /**
      * @dev Function to mint presale NFTs
      * @param _to Address of the recipient
+     * @param _proof Merkle proof provided by the client
      */
-    function mintPresale(address _to) external {
+    function mintPresale(address _to, bytes32[] calldata _proof) external {
         //TODO: Add check for whitelisted address
         require(isPresaleActive, "Presale is not active");
         require(!isSalePaused, "NFT sale is paused");
@@ -72,6 +76,15 @@ contract LoftyClouds is ERC1155, Ownable {
             "Already minted presale for this address"
         );
         require(currentTokenID <= FREE_NFT_SUPPLY, "Presale NFTs sold out");
+
+        require(
+            MerkleProof.verify(
+                _proof,
+                WHITELIST_MERKLE_TREE_ROOT,
+                keccak256(abi.encodePacked(_to))
+            ),
+            "Minting address is not on whitelist"
+        );
 
         bytes memory _data;
         ++currentTokenID;
