@@ -4,9 +4,9 @@
 - Some assets (logo, font) can be found in the same folder as this readme
 - Key features on the website:
     - Connect wallet button
-    - Website should display whether presale is open or general sale (check [this script](https://github.com/sinhau/natureboy_nft/blob/main/scripts/getPresaleStatus.js))
+    - Website should display whether presale is open or general sale (check [this example script](https://github.com/sinhau/natureboy_nft/blob/main/scripts/getPresaleStatus.js))
     - A mint button with a number to select how many NFTs to mint
         - For presale, can only mint one NFT
-            - For presale mint, the website will need to generate a merkle proof client side (see [this script](https://github.com/sinhau/natureboy_nft/blob/main/scripts/mintPresale.js)) so the contract can make sure only whitelisted addresses can mint NFT during presale
-        - For general sale, can mint up to 3 NFTs at a time
+            - For presale mint, the website will need to generate a merkle proof client side (see [this example script](https://github.com/sinhau/natureboy_nft/blob/main/scripts/mintPresale.js)) so the contract can make sure only whitelisted addresses can mint NFT during presale
+        - For general sale, can mint up to 3 NFTs at a time (check [this example script](https://github.com/sinhau/natureboy_nft/blob/main/scripts/mintRegular.js))
     - Handle and display any revert error messages from the smart contract
