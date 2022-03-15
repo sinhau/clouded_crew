@@ -1,6 +1,6 @@
 ## Frontend things to do
 
-- Create a single page minting website (use template/layout similar to [Dicklebutts](www.dicklebutts.com))
+- Create a single page minting website (use template/layout similar to [Dicklebutts](https://dicklebutts.com))
 - Some assets (logo, font) can be found in the same folder as this readme
 - Key features on the website:
     - Connect wallet button
