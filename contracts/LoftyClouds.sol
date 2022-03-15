@@ -130,7 +130,7 @@ contract LoftyClouds is ERC1155, Ownable {
      * @dev Function to start/pause the sale
      * @param _isSalePaused Boolean to set sale to paused or unpaused
      */
-    function updateSalePausedStatus(bool _isSalePaused) external {
+    function updateSalePausedStatus(bool _isSalePaused) external onlyOwner {
         isSalePaused = _isSalePaused;
     }
 
