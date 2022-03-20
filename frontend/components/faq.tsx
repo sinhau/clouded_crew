@@ -19,7 +19,7 @@ export default function FAQ() {
   const AnswerText = ({ children }: any) => (
     <Text
       flex={1}
-      fontWeight="600"
+      fontWeight="500"
       fontStyle="normal"
       fontSize="1rem"
       lineHeight="1.5rem"
