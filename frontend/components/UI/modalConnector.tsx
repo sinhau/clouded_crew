@@ -25,7 +25,7 @@ export default function ConnectorModal({ connectM }: any) {
   const coinbase = useConnectorCoinbase();
   const metamask = useConnectorMetamask();
   const walletconnect = useConnectorWalletConnect();
-  const { disconnect } = useDisconnect();
+  const { disconnect }: any = useDisconnect();
 
   // if (account && connectM.isOpen) {
   //   connectM.onClose();
