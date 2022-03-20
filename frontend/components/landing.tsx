@@ -15,12 +15,13 @@ export default function Landing() {
         bgRepeat="repeat"
         bgSize="cover"
         alignItems="center"
+        justifyContent="center"
+        spacing="2rem"
       >
       <Navbar />
 
-        <Heading>Our Mission</Heading>
-        <Text w={{base: "90%", md: "50%"}}>Our mission is to onboard more creatives to the NFT space by giving them the support and funding they need to build their own project. We also are committing 10% of mint sales and 0.333% of royalties to charities that support art programs in the school system.</Text>
-
+        <Stack         alignItems="center"
+>
         <Heading variant="medium">How many?</Heading>
         <motion.div
           whileHover={{scale: 1.2}}
@@ -29,7 +30,15 @@ export default function Landing() {
             Mint NFT
           </Button>
         </motion.div>
+        </Stack>
+
+        <Stack         alignItems="center"
+>
+        <Heading textAlign="center">Our Mission</Heading>
+        <Text textAlign="center" w={{base: "90%", md: "50%"}}>Our mission is to onboard more creatives to the NFT space by giving them the support and funding they need to build their own project. We also are committing 10% of mint sales and 0.333% of royalties to charities that support art programs in the school system.</Text>
+        </Stack>
         <FAQ />
+
       </Stack>
     </Flex>
   );
