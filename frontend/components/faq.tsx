@@ -19,7 +19,7 @@ export default function FAQ() {
   const AnswerText = ({ children }) => (
     <Text
       flex={1}
-      fontWeight="400"
+      fontWeight="600"
       fontStyle="normal"
       fontSize="1rem"
       lineHeight="1.5rem"
@@ -31,7 +31,7 @@ export default function FAQ() {
 
   const QuestionText = ({children}) => (
     <Flex marginY="1rem" w="full" justify="space-between">
-      <Heading textAlign="left" variant="medium" fontWeight="600">
+      <Heading textAlign="left" fontSize="1.25rem" fontWeight="900">
         {children}
       </Heading>
       <AccordionIcon />
@@ -41,23 +41,20 @@ export default function FAQ() {
   return (
     <Grid
       gridTemplateColumns="1fr"
-      w={{ xl: "70%", sm: "94%" }}
+      w={{  base: "90%", lg: "70%" }}
       gap="1rem"
       mt={"6rem"}
-      as="section"
-      id="faq"
     >
-      <Heading variant="large" textAlign="center">
+      <Heading textAlign="center">
       Clouded Crew FAQ
       </Heading>
       <Accordion allowMultiple allowToggle>
         {FrequentlyAskedQuestions.map((faq, index) => (
-          <AccordionItem key={index}>
+          <AccordionItem border="none" key={index}>
             <AccordionButton _focus={{ borderSize: "0px", border: "none" }}>
               <QuestionText>{faq.question}</QuestionText>
             </AccordionButton>
             <AccordionPanel mt={-4}>
-              {/* <Box color={colorMode === 'dark' ? "#A0A0A0" : "#6F6F6F"}></Box> */}
               <AnswerText>{faq.answer}</AnswerText>
             </AccordionPanel>
           </AccordionItem>

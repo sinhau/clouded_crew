@@ -7,37 +7,20 @@ export default function Landing() {
   return (
     <Flex direction="column" minH="100vh" w="100%">
       <Stack
-        alignItems="center"
-        justifyItems="center"
-        bgImage="/assets/cloudedCrewBanner.png"
-        bgRepeat="no-repeat"
-        bgSize={{base: "100% 100%",lg: "cover"}}
-        minH="50vh"
-      >
-        <Navbar />
-      </Stack>
-
-      <Stack
-        minH="50vh"
+        minH="100vh"
+        w="100%"
         bgImage="/assets/bannertweet.png"
         bgRepeat="repeat"
         bgSize="cover"
         alignItems="center"
       >
+      <Navbar />
 
-              <Heading
-                variant="medium"
-              >
-                How many?
-              </Heading>
-              <Button
-                variant="primary"
-                w="fit-content"
-              >
-                Mint NFT
-              </Button>
+        <Heading variant="medium">How many?</Heading>
+        <Button variant="primary" w="fit-content">
+          Mint NFT
+        </Button>
         <FAQ />
-
       </Stack>
     </Flex>
   );
