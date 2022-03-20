@@ -1,8 +1,8 @@
 import { CHAINS } from "@lido-sdk/constants";
 
-export const supportedChainIds = [1, 4];
+export const supportedChainIds = [CHAINS.Mainnet, CHAINS.Rinkeby];
 
 export const rpc = {
-  1: "https://main-light.eth.linkpool.io",
-  4: process.env.NEXT_PUBLIC_SC_RPC_RINKEBY
+  [CHAINS.Mainnet]: "https://main-light.eth.linkpool.io",
+  [CHAINS.Rinkeby]: "https://eth-rinkeby.alchemyapi.io/v2/Tu1kbaSWQJAlqnmR1vdwfFWdWm-NqGYL"
 };

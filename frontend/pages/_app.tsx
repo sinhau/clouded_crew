@@ -11,20 +11,19 @@ export const Fonts = () => (
   <Global
     styles={`
     @font-face {
-      font-family: "Mckloud Black";
-      src: url("./fonts/MckloudBlack.ttf") format("ttf"),
-      font-display: fallback;
+      font-family: "McKloud";
+      src: url("./fonts/Mckloud/MCKLB.ttf") format("ttf");
+      font-display: swap;
     }`}
   />
 );
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ProviderWeb3
-      defaultChainId={1}
-      supportedChainIds={supportedChainIds}
-      rpc={rpc}
-    >
+  <ProviderWeb3
+    defaultChainId={1}
+    rpc={rpc}
+    supportedChainIds={supportedChainIds}>
     <ChakraProvider theme={theme}>
     <Fonts />
     <Component {...pageProps} />

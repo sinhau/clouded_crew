@@ -45,7 +45,7 @@ export default function FAQ() {
       gap="1rem"
       mt={"6rem"}
     >
-      <Heading textAlign="center">
+      <Heading variant="large" fontFamily="McKloud" textAlign="center">
       Clouded Crew FAQ
       </Heading>
       <Accordion allowMultiple allowToggle>

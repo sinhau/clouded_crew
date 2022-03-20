@@ -33,7 +33,7 @@ export const customTheme = {
     },
   },
   fonts: {
-    heading: "Mckloud Black, Inter",
+    heading: "McKloud Black, Inter",
     body: "Inter",
   },
   colors: {
@@ -53,21 +53,21 @@ export const customTheme = {
     Heading: {
       variants: {
         large: {
-          fontFamily: "Mckloud Black",
+          fontFamily: "McKloud Black",
           fontWeight: "700",
           fontStyle: "normal",
           fontSize: "4.5rem",
           lineHeight: "4.5rem",
         },
         medium: {
-          fontFamily: "Mckloud Black",
+          fontFamily: "McKloud Black",
           fontWeight: "700",
           fontStyle: "normal",
           fontSize: "1rem",
           lineHeight: "1rem",
         },
         small: {
-          fontFamily: "Mckloud Black",
+          fontFamily: "McKloud Black",
           fontWeight: "700",
           fontStyle: "normal",
           fontSize: "0.875rem",
