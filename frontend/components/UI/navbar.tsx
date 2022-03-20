@@ -5,7 +5,11 @@ import Image from 'next/image';
 
 import ConnectorModal from "./modalConnector";
 
+import {useWeb3} from "@lido-sdk/web3-react";
+import {trimAddress} from "../utils";
+
 export default function Navbar() {
+  const {account} = useWeb3();
 
   const connectM = useDisclosure();
 
@@ -36,9 +40,10 @@ export default function Navbar() {
           </NextLink>
 
             <Button
+              variant="primary"
               onClick={() => connectM.onOpen()}
             >
-              Connect Wallet
+              {account ? trimAddress(account) : "Connect Wallet"}
             </Button>
         </HStack>
 

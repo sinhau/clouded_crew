@@ -109,8 +109,13 @@ export const customTheme = {
           borderColor: "#678BC7",
           p: "16px",
           color: "black",
-          fontFamily: "Inter"
-        },
+          fontFamily: "Inter",
+          _hover: {
+            textDecoration: "none !important",
+          },
+          _focus: {
+            boxShadow: "none",
+          },        },
       },
     },
   },
