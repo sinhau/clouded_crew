@@ -5,7 +5,7 @@ import FAQ from "./faq";
 
 export default function Landing() {
   return (
-    <Flex direction="column" minH="100vh" w="100%">
+    <Flex direction="column" minH="100vh" w="100%" overflow="hidden">
       <Stack
         minH="100vh"
         w="100%"

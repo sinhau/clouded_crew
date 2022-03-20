@@ -16,7 +16,7 @@ import React from "react";
 
 export default function FAQ() {
 
-  const AnswerText = ({ children }) => (
+  const AnswerText = ({ children }: any) => (
     <Text
       flex={1}
       fontWeight="600"
@@ -29,7 +29,7 @@ export default function FAQ() {
     </Text>
   );
 
-  const QuestionText = ({children}) => (
+  const QuestionText = ({children}: any) => (
     <Flex marginY="1rem" w="full" justify="space-between">
       <Heading textAlign="left" fontSize="1.25rem" fontWeight="900">
         {children}

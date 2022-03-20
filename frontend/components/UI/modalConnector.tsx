@@ -5,7 +5,7 @@ useConnectorMetamask,
 useConnectorTrust,
 useConnectorWalletConnect} from "@lido-sdk/web3-react"
 
-export default function ConnectorModal({connectM}) {
+export default function ConnectorModal({connectM}: any) {
 
   const coinbase = useConnectorCoinbase();
   const metamask = useConnectorMetamask()
