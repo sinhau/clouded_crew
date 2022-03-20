@@ -21,33 +21,24 @@ export default function Landing() {
         minH="50vh"
         bgImage="/assets/bannertweet.png"
         bgRepeat="repeat"
-        transform="rotate(180deg)"
         bgSize="cover"
-        position="relative"
+        alignItems="center"
       >
-        <Heading
-          position="absolute"
-          bottom="25%"
-          left="50%"
-          transform="rotate(180deg)"
-          variant="medium"
-        >
-          How many?
-        </Heading>
-        <Button
-          position="absolute"
-          top="50%"
-          left="50%"
-          m="auto"
-          transform="rotate(180deg)"
-          variant="primary"
-          w="fit-content"
-        >
-          Mint NFT
-        </Button>
-      </Stack>
 
-      <FAQ />
+              <Heading
+                variant="medium"
+              >
+                How many?
+              </Heading>
+              <Button
+                variant="primary"
+                w="fit-content"
+              >
+                Mint NFT
+              </Button>
+        <FAQ />
+
+      </Stack>
     </Flex>
   );
 }
