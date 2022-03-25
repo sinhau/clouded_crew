@@ -14,7 +14,6 @@ import {
   useWeb3,
   useConnectorCoinbase,
   useConnectorMetamask,
-  useConnectorTrust,
   useConnectorWalletConnect,
   useDisconnect
 } from "@lido-sdk/web3-react";
@@ -26,10 +25,6 @@ export default function ConnectorModal({ connectM }: any) {
   const metamask = useConnectorMetamask();
   const walletconnect = useConnectorWalletConnect();
   const { disconnect }: any = useDisconnect();
-
-  // if (account && connectM.isOpen) {
-  //   connectM.onClose();
-  // }
 
   return (
     <Modal isOpen={connectM.isOpen} onClose={connectM.onClose} isCentered>

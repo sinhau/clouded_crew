@@ -1,3 +1,5 @@
+import {useEffect} from "react";
+
 import {HStack, Button, Flex, useDisclosure} from "@chakra-ui/react";
 
 import NextLink from 'next/link';
@@ -9,9 +11,22 @@ import {useWeb3} from "@lido-sdk/web3-react";
 import {trimAddress} from "../utils";
 
 export default function Navbar() {
-  const {account} = useWeb3();
+  const {account, chainId} = useWeb3();
 
   const connectM = useDisclosure();
+
+  const selectChain = async () => {
+    await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: "0x4" }],
+    });
+  }
+
+  useEffect(() => {
+    if (account && chainId != 4) {
+      selectChain();
+    }
+  })
 
   return (
     <>

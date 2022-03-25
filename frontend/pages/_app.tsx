@@ -23,7 +23,7 @@ export const Fonts = () => (
 function MyApp({ Component, pageProps }: AppProps) {
   return (
   <ProviderWeb3
-    defaultChainId={1}
+    defaultChainId={4}
     rpc={rpc}
     supportedChainIds={supportedChainIds}>
     <ChakraProvider theme={theme}>
