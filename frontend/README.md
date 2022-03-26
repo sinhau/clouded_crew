@@ -1,7 +1,7 @@
 ## Frontend things to do
 
 - Create a single page minting website (use template/layout similar to [Dicklebutts](https://dicklebutts.com))
-- Some assets (logo, font) can be found in the same folder as this readme
+- All the assets we have so far are in the ./public/assets folder
 - Key features on the website:
     - Connect wallet button
     - Website should display whether presale is open or general sale (check [this example script](https://github.com/sinhau/natureboy_nft/blob/main/scripts/getPresaleStatus.js))
