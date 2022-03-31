@@ -1,0 +1,20 @@
+{
+  "CONTRACT_ADDRESS": "0xFbeFa82E1Dc1C05B1bbF4cb1F4211DEF635Aa463",
+  "SCAN_LINK": "https://rinkeby.etherscan.io/address/0xFbeFa82E1Dc1C05B1bbF4cb1F4211DEF635Aa463",
+  "NETWORK": {
+    "NAME": "Rinkeby",
+    "SYMBOL": "ETH",
+    "ID": 4
+  },
+  "NFT_NAME": "Clouded Crew",
+  "SYMBOL": "NFT",
+  "MAX_SUPPLY": 3333,
+  "PRE_WEI_COST": 0,
+  "PRE_DISPLAY_COST": 0,
+  "WEI_COST": 30000000000000000,
+  "DISPLAY_COST": 0.03,
+  "GAS_LIMIT": 285000,
+  "MARKETPLACE": "Opeansea",
+  "MARKETPLACE_LINK": "https://opensea.io/collection/nft",
+  "SHOW_BACKGROUND": false
+}
