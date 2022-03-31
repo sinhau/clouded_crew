@@ -34,7 +34,7 @@ Config file is present inside public folder --> Config --> config.json
 
 Change Contract address and Scan link accordingly
 
-Network:
+### Network:
 #### (Rinkeby)
 Name: Rinkeby\
 Symbol: ETH\
