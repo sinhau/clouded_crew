@@ -38,12 +38,12 @@ Network:
 #### (Rinkeby)
 Name: Rinkeby\
 Symbol: ETH\
-ID: 4\
+ID: 4
 
 #### (Ethereum Mainnet)
 Name: Ethereum\
 Symbol: ETH\
-ID: 1\
+ID: 1
 
 Pre Wei Cost - Cost in wei for presale\
 Pre Display Cost - Cost to display in eth during presale
