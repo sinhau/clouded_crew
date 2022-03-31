@@ -35,18 +35,18 @@ Config file is present inside public folder --> Config --> config.json
 Change Contract address and Scan link accordingly
 
 Network:
-(Rinkeby)
-Name: Rinkeby
-Symbol: ETH
-ID: 4
+#### (Rinkeby)
+Name: Rinkeby\
+Symbol: ETH\
+ID: 4\
 
-(Ethereum Mainnet)
-Name: Ethereum
-Symbol: ETH
-ID: 1
+#### (Ethereum Mainnet)
+Name: Ethereum\
+Symbol: ETH\
+ID: 1\
 
-Pre Wei Cost - Cost in wei for presale
+Pre Wei Cost - Cost in wei for presale\
 Pre Display Cost - Cost to display in eth during presale
 
-Wei Cost - Cost in Wei for public sale
+Wei Cost - Cost in Wei for public sale\
 Display Cost - Cost to display in eth during public sale
