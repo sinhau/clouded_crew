@@ -1,0 +1,487 @@
+@font-face {
+  font-family: 'MckloudBlack';
+  src: url('./assets/MckloudBlack-32p.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.App {
+  text-align: center;
+  /* background-image: linear-gradient(90deg,#09081d, #47235c); */
+  background: url("./assets/WEB\ BACKGROUND.png");
+  font-family: 'MckloudBlack';
+  height: auto;
+}
+
+.NavCon{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+}
+
+.NavBar {
+  height: 100px;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+  /* background-color: rgba(255, 255, 255, 0.2); */
+}
+
+.NavBar h1{
+  font-size: 40px;
+  font-weight: 400;
+  color: #000;
+  margin: 0;
+}
+
+.NavBar button{
+  border: none;
+  background-color: #5374b1;
+  color: #fff;
+  font-family: 'MckloudBlack';
+  padding: 13px 20px;
+  cursor: pointer;
+  border-radius: 25px;
+  font-size: 23px;
+  margin-left: 50px;
+  -webkit-text-fill-color: white;
+   -webkit-text-stroke-width: 1px;
+   -webkit-text-stroke-color: black;
+}
+
+.Logo{
+  /* margin-left: 180px; */
+  height: 90px;
+  width: 90px;
+  background: url('./assets/logo_fla.png');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.MenuCon{
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top:0;
+  /* background-image: linear-gradient(90deg,#09081d, #47235c); */
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  padding-top: 80px;
+}
+
+.MenuCon ul li{
+  margin-top: 40px;
+}
+
+.MenuCon ul li a {
+  font-size: 30px;
+  color: #fff;
+  text-decoration: none;
+  position: relative;
+  cursor: pointer;
+}
+
+.MenuIconCon{
+  display: none;
+}
+
+.NavBar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.NavBar ul li a {
+  font-size: 25px;
+  color: #fff;
+  font-weight: 400;
+  text-decoration: none;
+  margin-left: 40px;
+  position: relative;
+  cursor: pointer;
+}
+
+.NavBar ul li a::after{
+  content: '';
+  background-color: #face23;
+  height: 2px;
+  width: 0;
+  position: absolute;
+  bottom: 0;  
+  left: 0;
+  transition: width 0.2s;
+}
+
+.NavBar ul li a:hover::after{
+  width: 100%;
+}
+
+.FlexContainer{
+  flex: 1;
+}
+
+.SocCon{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 140px;
+}
+
+.Header {
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding: 0px 0px;
+  position: relative;
+}
+
+.HeaderBg {
+  height: 100%;
+  width: 70%;
+  background: url('./assets/cloudedCrewBanner.png');
+  background-position: 0px 100px; 
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Header h1 {
+  font-size: 50px;
+  color: #fff;
+  font-weight: 400;
+  margin: 0;
+  -webkit-text-fill-color: white;
+   -webkit-text-stroke-width: 2px;
+   -webkit-text-stroke-color: black;
+}
+
+.Header h3 {
+  font-size: 30px;
+  color: #fff;
+  font-weight: 400;
+  margin: 0;
+  margin-top: 15px;
+  -webkit-text-fill-color: white;
+   -webkit-text-stroke-width: 1.5px;
+   -webkit-text-stroke-color: black;
+}
+
+.Header button{
+  border: none;
+  background-color: #5374b1;
+  color: #fff;
+  font-family: 'MckloudBlack';
+  padding: 15px 25px;
+  border-radius: 25px;
+  margin-top: 15px;
+  cursor: pointer;
+  font-size: 25px;
+  -webkit-text-fill-color: white;
+   -webkit-text-stroke-width: 1px;
+   -webkit-text-stroke-color: black;
+}
+
+.HeadMint{
+  margin-top: 230px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.About {
+  height: auto;
+  padding: 40px 0px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.About h1 {
+  font-size: 60px;
+  font-weight: 400;
+  color: #fff;
+  margin: 0;
+  -webkit-text-fill-color: white;
+   -webkit-text-stroke-width: 2px;
+   -webkit-text-stroke-color: black;
+}
+
+.About p {
+  color: #fff;
+  width: 80%;
+  text-align: justify;
+  font-size: 30px;
+  line-height: 40px;
+  /* text-shadow: 2px 0 black, -2px 0 black, 0 2px black, 0 -2px black, 1px 1px black, -1px -1px black, -1px 1px black, 1px -1px black; */
+  -webkit-text-fill-color: white;
+   -webkit-text-stroke-width: 1.5px;
+   -webkit-text-stroke-color: black;
+}
+
+.FAQ {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 0px;
+}
+
+.FAQ h1 {
+  font-size: 60px;
+  color: #fff;
+  margin: 0;
+  -webkit-text-fill-color: white;
+   -webkit-text-stroke-width: 2px;
+   -webkit-text-stroke-color: black;
+}
+
+.FAQ h2 {
+  font-size: 24px;
+  font-weight: 500;
+  color: #fff;
+  margin: 0;
+  font-family: 'MckloudBlack';
+  margin-left: 20px;
+  margin-right: 20px;
+  -webkit-text-fill-color: white;
+   -webkit-text-stroke-width: 1.5px;
+   -webkit-text-stroke-color: black;
+}
+
+.FAQCon {
+  width: 80%;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.FAQQuCon{
+  height: 80px;
+  border-radius: 15px;
+  user-select: none;
+  border: 1px solid #F3A9CF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.FAQAnCon{
+  height: 0px;
+  overflow: hidden;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.FAQShow{
+  height: auto;
+}
+
+.Member{
+  height: auto;
+  padding: 50px 0;
+  /* background-image: url("../assets/star.png");
+  background-repeat: no-repeat;
+  background-size: cover; */
+  display: flex;
+  justify-content: center;
+}
+
+.MemberCon{
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.Member h1{
+  font-size: 60px;
+  font-weight: 400;
+  color: #000;
+  margin: 0;
+}
+
+.Member h2{
+  color:#000;
+  margin: 0;
+  font-weight: 500;
+  font-size: 30px;
+  margin-top: 20px;
+}
+
+.Member h3{
+  color:#000;
+  margin: 0;
+  font-weight: 400;
+  text-align: center;
+  font-size: 25px;
+  margin-top: 10px;
+  width: 90%;
+}
+
+.Member p{
+  color:#000;
+  margin: 0;
+  font-weight: 400;
+  text-align: justify;
+  font-size: 16px;
+  margin-top: 20px;
+  width: 90%;
+}
+
+.Member img{
+  width: 90%;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.MemberCardCon{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+.MemberCardCon1{
+  width: 100%;
+  display: none;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.MemberCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 350px;
+  position: relative;
+}
+
+.MemOverlay{
+  height: 100%;
+  width: 100%;
+  background-color: #36095744;
+  position: absolute;
+}
+
+.Footer{
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Footer p{
+  width: 80%;
+  font-size: 25px;
+  -webkit-text-fill-color: white;
+   -webkit-text-stroke-width: 1.5px;
+   -webkit-text-stroke-color: black;
+}
+
+
+@media only screen and (max-width: 950px) {
+  .MenuIconCon{
+    display: flex;
+  }
+  .NavBar ul{
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 900px){
+  .Header h1{
+    font-size: 45px;
+  }
+  .About h1{
+    font-size: 50px;
+  }
+  .FAQ h1{
+    font-size: 50px;
+  }
+  .HeadMint{
+    margin-top: 220px;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .About p{
+    font-size: 25px;
+    width: 90%;
+  }
+  .FAQCon{
+    width: 90%;
+  }
+  .Footer p{
+    width: 90%;
+  }
+  .HeaderBg {
+    width: 80%;
+  }
+  .FAQQuCon{
+    height: auto;
+    padding: 15px 0;
+  }
+  .HeadMint{
+    margin-top: 200px;
+  }
+  .NavBar {
+    width: 90%;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .MemberCardCon{
+    flex-direction: column;
+  }
+  .MemberCard{
+    width: 100%;
+    padding-bottom: 50px;
+  }
+  .HeaderBg {
+    width: 90%;
+  }
+  .Header h1{
+    font-size: 40px;
+  }
+  .About h1{
+    font-size: 40px;
+  }
+  .FAQ h1{
+    font-size: 40px;
+  }
+  .HeadMint{
+    margin-top: 180px;
+  }
+  .Logo{
+    height: 55px;
+  }
+  .Footer{
+    height: auto;
+  }
+  .NavBar button{
+    display: none;
+  }
+}
