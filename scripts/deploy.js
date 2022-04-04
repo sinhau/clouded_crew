@@ -14,8 +14,11 @@ async function deployContract() {
   // Deploy main contract
   console.log("---\nDeploying main contract");
 
-  const contractFactory = await ethers.getContractFactory("LoftyClouds");
-  const contract = await contractFactory.deploy(merkleTree.getHexRoot());
+  const contractFactory = await ethers.getContractFactory("CloudedCrew");
+  const contract = await contractFactory.deploy(
+    merkleTree.getHexRoot(),
+    "0xdd175a204142040850211B529Dcb9af6eE743e1B",
+    "https://gateway.pinata.cloud/ipfs/Qmaxqbo2ZDBRYv7Ukw7L9B7dq2vUQqB1ysH6x5CLcDAVPa/");
 
   console.log("Contract deployed at: ", contract.address, "\n");
 }

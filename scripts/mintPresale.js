@@ -8,14 +8,14 @@ const keccak256 = require("keccak256");
 
 const web3 = createAlchemyWeb3(RINKEBY_API_URL);
 
-const contract = require("../artifacts/contracts/LoftyClouds.sol/LoftyClouds.json");
+const contract = require("../artifacts/contracts/CloudedCrew.sol/CloudedCrew.json");
 
 const nftContract = new web3.eth.Contract(contract.abi, CONTRACT_ADDRESS);
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const PUBLIC_KEY = process.env.PUBLIC_KEY;
 async function mintPresale() {
-  console.log("Minting 1 presale LoftyClouds...");
+  console.log("Minting 1 presale Clouded Crew...");
 
   this.whitelist = require("../whitelist.json");
 
@@ -33,10 +33,7 @@ async function mintPresale() {
     nonce: nonce,
     gas: 150000,
     data: nftContract.methods
-      .mintPresale(
-        PUBLIC_KEY,
-        this.merkleTree.getHexProof(keccak256(PUBLIC_KEY))
-      )
+      .mintPresale(this.merkleTree.getHexProof(keccak256(PUBLIC_KEY)))
       .encodeABI(),
   };
 

@@ -6,7 +6,7 @@ const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const { base64 } = require("ethers/lib/utils");
 const web3 = createAlchemyWeb3(RINKEBY_API_URL);
 
-const contract = require("../artifacts/contracts/LoftyClouds.sol/LoftyClouds.json");
+const contract = require("../artifacts/contracts/CloudedCrew.sol/CloudedCrew.json");
 
 const nftContract = new web3.eth.Contract(contract.abi, CONTRACT_ADDRESS);
 

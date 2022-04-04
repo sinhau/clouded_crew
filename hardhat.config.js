@@ -9,7 +9,7 @@ require("hardhat-gas-reporter");
 const { RINKEBY_API_URL, PRIVATE_KEY } = process.env;
 
 module.exports = {
-  solidity: "0.8.1",
+  solidity: "0.8.11",
   settings: {
     optimizer: {
       enabled: true,

@@ -5,14 +5,14 @@ const CONTRACT_ADDRESS = process.env.TESTNET_CONTRACT_ADDRESS;
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(RINKEBY_API_URL);
 
-const contract = require("../artifacts/contracts/LoftyClouds.sol/LoftyClouds.json");
+const contract = require("../artifacts/contracts/CloudedCrew.sol/CloudedCrew.json");
 
 const nftContract = new web3.eth.Contract(contract.abi, CONTRACT_ADDRESS);
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const PUBLIC_KEY = process.env.PUBLIC_KEY;
 async function mint(amount) {
-  console.log("Minting " + amount + " LoftyClouds...");
+  console.log("Minting " + amount + " CloudedCrew...");
 
   const nonce = await web3.eth.getTransactionCount(PUBLIC_KEY, "latest"); //get latest nonce
 
@@ -23,7 +23,7 @@ async function mint(amount) {
     value: web3.utils.toWei((0.03 * amount).toString(), "ether"),
     nonce: nonce,
     gas: 150000,
-    data: nftContract.methods.batchMint(PUBLIC_KEY, amount).encodeABI(),
+    data: nftContract.methods.batchMint(amount).encodeABI(),
   };
 
   console.log("Minting NFT");
