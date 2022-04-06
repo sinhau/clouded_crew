@@ -7,8 +7,13 @@ require("dotenv").config();
 describe("CloudedCrew", function () {
   before(async function () {
     this.accounts = await ethers.getSigners();
-    this.whitelist_account = new ethers.Wallet(process.env.PRIVATE_KEY, ethers.getDefaultProvider());
+    this.whitelist_account = new ethers.Wallet(
+      process.env.PRIVATE_KEY,
+      ethers.getDefaultProvider()
+    );
     this.owner = this.accounts[0];
+    this.proxyRegistryAddressOpensea =
+      "0x1E525EEAF261cA41b809884CBDE9DD9E1619573A";
     this.baseMetadataURI =
       "https://gateway.pinata.cloud/ipfs/Qmaxqbo2ZDBRYv7Ukw7L9B7dq2vUQqB1ysH6x5CLcDAVPa/";
 
@@ -25,7 +30,8 @@ describe("CloudedCrew", function () {
     this.contract = await contractFactory.deploy(
       this.merkleTree.getHexRoot(),
       this.owner.address,
-      this.baseMetadataURI
+      this.baseMetadataURI,
+      this.proxyRegistryAddressOpensea
     );
   });
 
@@ -67,11 +73,17 @@ describe("CloudedCrew", function () {
           )
       ).to.be.revertedWith("NotOnWhitelist()");
 
-      expect(await this.contract.balanceOf(this.whitelist_account.address, 1)).to.equal(0);
-      await this.contract.connect(this.whitelist_account).mintPresale(
-        this.merkleTree.getHexProof(keccak256(this.whitelist_account.address))
-      );
-      expect(await this.contract.balanceOf(this.whitelist_account.address, 1)).to.equal(1);
+      expect(
+        await this.contract.balanceOf(this.whitelist_account.address, 1)
+      ).to.equal(0);
+      await this.contract
+        .connect(this.whitelist_account)
+        .mintPresale(
+          this.merkleTree.getHexProof(keccak256(this.whitelist_account.address))
+        );
+      expect(
+        await this.contract.balanceOf(this.whitelist_account.address, 1)
+      ).to.equal(1);
     });
 
     it("Should not be able to mint more than 1 per whitelisted wallet", async function () {

@@ -11,12 +11,15 @@ const contract = require("../artifacts/contracts/CloudedCrew.sol/CloudedCrew.jso
 
 const nftContract = new web3.eth.Contract(contract.abi, CONTRACT_ADDRESS);
 
-const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const PUBLIC_KEY = process.env.PUBLIC_KEY;
+const ALTERNATE_PUBLIC_KEY = process.env.ALTERNATE_PUBLIC_KEY;
 
 async function getBalance(tokenID) {
   const resp = await nftContract.methods.balanceOf(PUBLIC_KEY, tokenID).call();
-  console.log(resp);
+  const resp2 = await nftContract.methods.balanceOf(ALTERNATE_PUBLIC_KEY, tokenID).call();
+  console.log(
+    `Balance of ${PUBLIC_KEY}: ${resp}\nBalance of ${ALTERNATE_PUBLIC_KEY}: ${resp2}`
+  );
 }
 
 var tokenID = process.argv[2];

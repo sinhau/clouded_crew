@@ -8,6 +8,15 @@ import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
+contract OwnableDelegateProxy {}
+
+/**
+Used to delegate ownership of a contract to another address, to save on unneeded transactions to approve contract use for users
+ */
+contract ProxyRegistry {
+    mapping(address => OwnableDelegateProxy) public proxies;
+}
+
 /////////////////////////////////
 /// ERRORS
 /////////////////////////////////
@@ -52,6 +61,7 @@ contract CloudedCrew is ERC1155, Ownable {
     /////////////////////////////////
 
     address private immutable _SPLITS_CONTRACT; //TODO: Create splits contract at 0xsplits.xyz before mainnet deployment
+    address private immutable _PROXY_REGISTRY_ADDRESS;
 
     /////////////////////////////////
     /// MODIFIERS
@@ -134,11 +144,13 @@ contract CloudedCrew is ERC1155, Ownable {
     constructor(
         bytes32 whitelist_merkle_tree_root,
         address splits_contract,
-        string memory baseMetadataURI
+        string memory baseMetadataURI,
+        address proxyRegistryAddressOpensea
     ) ERC1155(baseMetadataURI) {
         name = "Lofty Clouds";
         WHITELIST_MERKLE_TREE_ROOT = whitelist_merkle_tree_root;
         _SPLITS_CONTRACT = splits_contract;
+        _PROXY_REGISTRY_ADDRESS = proxyRegistryAddressOpensea;
     }
 
     /////////////////////////////////
@@ -253,6 +265,22 @@ contract CloudedCrew is ERC1155, Ownable {
                     ".json"
                 )
             );
+    }
+
+    /// @dev Override isApprovedForAll to whitelist user's OpenSea proxy accounts to enable gas-less listings.
+    function isApprovedForAll(address owner, address operator)
+        public
+        view
+        override
+        returns (bool)
+    {
+        // Whitelist OpenSea proxy contract for easy trading.
+        ProxyRegistry proxyRegistry = ProxyRegistry(_PROXY_REGISTRY_ADDRESS);
+        if (address(proxyRegistry.proxies(owner)) == operator) {
+            return true;
+        }
+
+        return super.isApprovedForAll(owner, operator);
     }
 
     /////////////////////////////////
