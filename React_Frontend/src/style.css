@@ -8,9 +8,9 @@
 
 .App {
   text-align: center;
-  /* background-image: linear-gradient(90deg,#09081d, #47235c); */
-  background: url("./assets/WEB\ BACKGROUND.png");
-  font-family: 'MckloudBlack';
+  /* background: url("./assets/WEB\ BACKGROUND.png"); */
+  background: url("./assets/BACKGROUND.png");
+  font-family: 'Balsamiq Sans', cursive;
   height: auto;
 }
 
@@ -42,15 +42,11 @@
   border: none;
   background-color: #5374b1;
   color: #fff;
-  font-family: 'MckloudBlack';
   padding: 13px 20px;
   cursor: pointer;
   border-radius: 25px;
   font-size: 23px;
   margin-left: 50px;
-  -webkit-text-fill-color: white;
-   -webkit-text-stroke-width: 1px;
-   -webkit-text-stroke-color: black;
 }
 
 .Logo{
@@ -131,7 +127,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 140px;
+  width: 180px;
 }
 
 .Header {
@@ -161,9 +157,6 @@
   color: #fff;
   font-weight: 400;
   margin: 0;
-  -webkit-text-fill-color: white;
-   -webkit-text-stroke-width: 2px;
-   -webkit-text-stroke-color: black;
 }
 
 .Header h3 {
@@ -172,24 +165,17 @@
   font-weight: 400;
   margin: 0;
   margin-top: 15px;
-  -webkit-text-fill-color: white;
-   -webkit-text-stroke-width: 1.5px;
-   -webkit-text-stroke-color: black;
 }
 
 .Header button{
   border: none;
   background-color: #5374b1;
   color: #fff;
-  font-family: 'MckloudBlack';
   padding: 15px 25px;
   border-radius: 25px;
   margin-top: 15px;
   cursor: pointer;
   font-size: 25px;
-  -webkit-text-fill-color: white;
-   -webkit-text-stroke-width: 1px;
-   -webkit-text-stroke-color: black;
 }
 
 .HeadMint{
@@ -209,26 +195,41 @@
   
 }
 
+.AboutCon{
+  width: 80%;
+  display: flex;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.AboutRight{
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin-left: 80px;
+}
+
+.About img{
+  width: 25%;
+  border-radius: 20px;
+}
+
 .About h1 {
   font-size: 60px;
-  font-weight: 400;
+  font-family: 'MckloudBlack';
   color: #fff;
   margin: 0;
-  -webkit-text-fill-color: white;
-   -webkit-text-stroke-width: 2px;
-   -webkit-text-stroke-color: black;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: #000;
 }
 
 .About p {
   color: #fff;
-  width: 80%;
   text-align: justify;
   font-size: 30px;
   line-height: 40px;
-  /* text-shadow: 2px 0 black, -2px 0 black, 0 2px black, 0 -2px black, 1px 1px black, -1px -1px black, -1px 1px black, 1px -1px black; */
-  -webkit-text-fill-color: white;
-   -webkit-text-stroke-width: 1.5px;
-   -webkit-text-stroke-color: black;
 }
 
 .FAQ {
@@ -242,11 +243,11 @@
 
 .FAQ h1 {
   font-size: 60px;
+  font-family: 'MckloudBlack';
   color: #fff;
   margin: 0;
-  -webkit-text-fill-color: white;
-   -webkit-text-stroke-width: 2px;
-   -webkit-text-stroke-color: black;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: #000;
 }
 
 .FAQ h2 {
@@ -254,12 +255,8 @@
   font-weight: 500;
   color: #fff;
   margin: 0;
-  font-family: 'MckloudBlack';
   margin-left: 20px;
   margin-right: 20px;
-  -webkit-text-fill-color: white;
-   -webkit-text-stroke-width: 1.5px;
-   -webkit-text-stroke-color: black;
 }
 
 .FAQCon {
@@ -396,9 +393,7 @@
 .Footer p{
   width: 80%;
   font-size: 25px;
-  -webkit-text-fill-color: white;
-   -webkit-text-stroke-width: 1.5px;
-   -webkit-text-stroke-color: black;
+  color: #fff;
 }
 
 
@@ -424,11 +419,23 @@
   .HeadMint{
     margin-top: 220px;
   }
+  .AboutCon{
+    flex-direction: column;
+  }
+  .About img{
+    width: 75%;
+  }
+  .AboutRight{
+    width: 100%;
+    margin-left: 0px;
+  }
 }
 
 @media only screen and (max-width: 700px) {
   .About p{
     font-size: 25px;
+  }
+  .AboutCon{
     width: 90%;
   }
   .FAQCon{
@@ -468,6 +475,9 @@
   }
   .About h1{
     font-size: 40px;
+  }
+  .About img{
+    width: 100%;
   }
   .FAQ h1{
     font-size: 40px;
