@@ -12,7 +12,7 @@ export default function FAQ({myRef}) {
     }
     return (
         <div ref={myRef} className={"FAQ"}>
-            <h1>Clouded Crew FAQ</h1>
+            <h1>FAQ</h1>
             <div className={"FAQCon"}>
                 <div className='FAQQuCon' onClick={()=>onOpen(0)}>
                     <h2>What is Clouded Crew?</h2>

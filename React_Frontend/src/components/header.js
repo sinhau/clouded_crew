@@ -7,7 +7,7 @@ import {
 import { fetchData } from "../redux/data/dataActions";
 import { handler } from "../api/index";
 import Web3 from "web3";
-import { FaTwitter, FaDiscord } from "react-icons/fa";
+import { FaTwitter, FaDiscord, FaInstagram } from "react-icons/fa";
 import Open from "../assets/open.png";
 import { getPresale } from "./getPresaleStatus";
 import { getPause } from "./getPauseStatus";
@@ -202,22 +202,28 @@ export default function Header({ myRef }) {
           <div className="Logo" />
           <div className={"FlexContainer"} />
           <div className="SocCon">
+          <FaInstagram
+              size={25}
+              color={"#fff"}
+              style={{ cursor: "pointer" }}
+              onClick={() => window.open("https://instagram.com/")}
+            />
             <FaTwitter
               size={25}
               color={"#fff"}
               style={{ cursor: "pointer" }}
-              onClick={() => window.open("https://natureboy-nft.vercel.app/")}
+              onClick={() => window.open("https://twitter.com/")}
             />
             <FaDiscord
               size={30}
               color={"#fff"}
               style={{ cursor: "pointer" }}
-              onClick={() => window.open("https://natureboy-nft.vercel.app/")}
+              onClick={() => window.open("https://discord.gg/")}
             />
             <img
               style={{ height: 25, width: 25, cursor: "pointer" }}
               src={Open}
-              onClick={() => window.open("https://natureboy-nft.vercel.app/")}
+              onClick={() => window.open("https://opensea.io/")}
             />
           </div>
           {blockchain.account ? (
