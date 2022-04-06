@@ -27,7 +27,7 @@ async function getRevertReason(txHash) {
   } catch (e) {
     var result = decoder.decodeData(e.data);
     if (result.method == null) {
-      result.method = e;
+      result.method = e.reason;
     }
   }
   return result;
