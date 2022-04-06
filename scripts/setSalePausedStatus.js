@@ -24,17 +24,17 @@ async function getRevertReason(txHash) {
   } catch (e) {
     var result = decoder.decodeData(e.data);
     if (result.method == null) {
-      result.method = e;
+      result.method = e.reason;
     }
   }
   return result;
 }
 
 async function setSaleStatus(saleStatus) {
-  const nonce = await web3.eth.getTransactionCount(PUBLIC_KEY, "latest");
+  const nonce = await web3.eth.getTransactionCount(ALTERNATE_PUBLIC_KEY, "latest");
 
   const tx = {
-    from: PUBLIC_KEY,
+    from: ALTERNATE_PUBLIC_KEY,
     to: CONTRACT_ADDRESS,
     nonce: nonce,
     gas: 15000000,
@@ -44,7 +44,7 @@ async function setSaleStatus(saleStatus) {
   const resp = await nftContract.methods.isSalePaused().call();
   console.log("Current sale pause status:", resp);
 
-  const signedTx = await web3.eth.accounts.signTransaction(tx, PRIVATE_KEY);
+  const signedTx = await web3.eth.accounts.signTransaction(tx, ALTERNATE_PRIVATE_KEY);
   console.log(`Setting sale pause status to ${saleStatus}`);
   try {
     const resp = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
