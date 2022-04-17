@@ -147,7 +147,7 @@ contract CloudedCrew is ERC1155, Ownable {
         string memory baseMetadataURI,
         address proxyRegistryAddressOpensea
     ) ERC1155(baseMetadataURI) {
-        name = "Lofty Clouds";
+        name = "Clouded Crew";
         WHITELIST_MERKLE_TREE_ROOT = whitelist_merkle_tree_root;
         _payout_wallet = payout_wallet;
         _PROXY_REGISTRY_ADDRESS = proxyRegistryAddressOpensea;
