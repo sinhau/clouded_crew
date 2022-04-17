@@ -60,7 +60,7 @@ contract CloudedCrew is ERC1155, Ownable {
     /// PRIVATE VARS
     /////////////////////////////////
 
-    address private immutable _SPLITS_CONTRACT; //TODO: Create splits contract at 0xsplits.xyz before mainnet deployment
+    address private _payout_wallet; //TODO: Create splits contract at 0xsplits.xyz before mainnet deployment
     address private immutable _PROXY_REGISTRY_ADDRESS;
 
     /////////////////////////////////
@@ -143,13 +143,13 @@ contract CloudedCrew is ERC1155, Ownable {
     /// @notice Setting base metadata URI to unrevealed metadata during contract deployment. Once all NFTs have been minted, contract owner will update base metadata URI to point to the actual metadata.  To ensure that metadata for each NFT was set prior to contract deployment, we have stored the provenance hash of all metadata JSON files in the contract as METADATA_PROVENANCE_HASH.  This provenance hash was computed by hashing a list of hashes of JSON metadata object for each NFT in order from 1 to MAX_NFT_SUPPLY.  This was done in Python using the web3.solidityKeccak method
     constructor(
         bytes32 whitelist_merkle_tree_root,
-        address splits_contract,
+        address payout_wallet,
         string memory baseMetadataURI,
         address proxyRegistryAddressOpensea
     ) ERC1155(baseMetadataURI) {
         name = "Lofty Clouds";
         WHITELIST_MERKLE_TREE_ROOT = whitelist_merkle_tree_root;
-        _SPLITS_CONTRACT = splits_contract;
+        _payout_wallet = payout_wallet;
         _PROXY_REGISTRY_ADDRESS = proxyRegistryAddressOpensea;
     }
 
@@ -207,7 +207,7 @@ contract CloudedCrew is ERC1155, Ownable {
 
     /// @dev Withdraw full balance the splits contract
     function withdrawFullBalance() external payable onlyOwner {
-        payable(_SPLITS_CONTRACT).transfer(address(this).balance);
+        payable(_payout_wallet).transfer(address(this).balance);
     }
 
     /// @dev Generate contract metadata URI
@@ -222,6 +222,12 @@ contract CloudedCrew is ERC1155, Ownable {
         onlyOwner
     {
         _setURI(newBaseMetadataURI);
+    }
+
+    /// @dev Updates the payout wallet
+    /// @param newPayoutWallet New payout wallet address
+    function setPayoutWallet(address newPayoutWallet) external onlyOwner {
+        _payout_wallet = newPayoutWallet;
     }
 
     /////////////////////////////////
