@@ -26,7 +26,7 @@ export default function FAQ({myRef}) {
                     <h2 style={{color:"rgba(255,255,255,0.8)"}}>{open == 1?"-" : "+"}</h2>
                 </div>
                 <div className={open == 1? 'FAQAnCon FAQShow':'FAQAnCon'}>
-                <h2>I started this project bc in my childhood I lived in my head. During class I always found myself daydreaming about something, my head was always in the clouds. We want to give back to the next generation of creatives, and allow people to dream, wander, and believe - that is the mission.
+                <h2>From our founder Natureboy, I started this project because in my childhood I lived in my head a lot. During class I always found myself daydreaming about something - my head was always in the clouds. I wanted to share that feeling of allowing yourself to be truly curious again back into the world and support the next generation of creatives. To allow people to dream, wander, and believe - that is my mission. I hope that people who see our creations will appreciate all the hard work and hundreds of hours we put into each project and cant wait to share it for the world to see.
                 </h2>
                 </div>
                 <div className='FAQQuCon' onClick={()=>onOpen(2)}>
@@ -44,7 +44,7 @@ export default function FAQ({myRef}) {
                 </div>
                 <div className={open == 3? 'FAQAnCon FAQShow':'FAQAnCon'}>
                 <h2>
-                All WL mints (333) will be FREE + Gas. Remaining will be 0.0333 ETH. It was important to us to make this collection on the cheaper side, with seeing many cash grabby looking projects in the market at the moment.
+                All WL mints (333) will be FREE + Gas. Remaining will be TBA in ETH. It was important to us to make this collection on the cheaper side, with seeing many cash grabby looking projects in the market at the moment.
                 </h2>
                 </div>
                 <div className='FAQQuCon' onClick={()=>onOpen(4)}>
@@ -53,7 +53,7 @@ export default function FAQ({myRef}) {
                 </div>
                 <div className={open == 4? 'FAQAnCon FAQShow':'FAQAnCon'}>
                 <h2>
-                Yes, the maximum limit to mint	 per wallet during the WL sale will be 1 and 3 for public sale. 
+                Yes, the maximum limit to mint	 per wallet during the WL sale will be 1 and 3 per transaction during the public sale. 
                 </h2>
                 </div>
                 <div className='FAQQuCon' onClick={()=>onOpen(5)}>
@@ -62,16 +62,17 @@ export default function FAQ({myRef}) {
                 </div>
                 <div className={open == 5? 'FAQAnCon FAQShow':'FAQAnCon'}>
                 <h2>
-                TBD
+                TBA - follow us on our Twitter and Discord for updated information. 
                 </h2>
                 </div>
                 <div className='FAQQuCon' onClick={()=>onOpen(6)}>
-                    <h2>Which charity will the money be donated to?</h2>
+                    <h2>How do I get on WL?</h2>
                     <h2 style={{color:"rgba(255,255,255,0.8)"}}>{open == 6?"-" : "+"}</h2>
                 </div>
                 <div className={open == 6? 'FAQAnCon FAQShow':'FAQAnCon'}>
                 <h2>
-                The final charity will be chosen by the Clouded Council, royalty donations will be donated on a month to month/quarterly basis
+                We are doing Twitter partnerships and giveaways, and will be hosting community events/contests in the coming days. <brk>
+                    Cloud Member = WL
                 </h2>
                 </div>
                 <div className='FAQQuCon' onClick={()=>onOpen(7)}>
@@ -80,11 +81,7 @@ export default function FAQ({myRef}) {
                 </div>
                 <div className={open == 7? 'FAQAnCon FAQShow':'FAQAnCon'}>
                 <h2>
-                Project collaborations and WL giveaways<br/>
-                Mint day<br/>
-                Establish the Clouded Council<br/>
-                Host community events<br/>
-                Onboard and grant our first creative
+                As we are an art project we dont want to box ourselves in with a roadmap and defined things to do. We are creatives first, we value being able to !drift and allow ourselves to create as we please. When something feels like a job, it take the fun out of doing what we love so for now we can only promise one thing - that we are constantly working on more creations to share. 
                 </h2>
                 </div>
                 <div className='FAQQuCon' onClick={()=>onOpen(8)}>
@@ -93,7 +90,7 @@ export default function FAQ({myRef}) {
                 </div>
                 <div className={open == 8? 'FAQAnCon FAQShow':'FAQAnCon'}>
                 <h2>
-                The utility behind Clouded Crew lies in the grants that we give to the creatives decided on by the Clouded Council. In return for funding by the treasury, the creative will guarantee WL spots for the community among other perks.
+                By being a Crew Member, holding one of our NFTs will grant you to holder only access to our next creations and first dibs on projects we are working on. We are working on a lot of cool things in the background, we can't wait to share them with you. 
                 </h2>
                 </div>
             </div>
