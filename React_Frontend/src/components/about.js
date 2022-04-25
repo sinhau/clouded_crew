@@ -12,7 +12,8 @@ export default function About({myRef}) {
             <img src={Image}/>
             <div className='AboutRight'>
             <p>
-            Our mission is to onboard more creatives to the NFT space by giving them the support and funding they need to build their own project. We also are committing 10% of mint sales and 0.333% of royalties to charities that support art programs in the school system.
+            Our goal from day one of starting this project has remained the same, to create awesome artwork that we can all share thru NFT technology and support the amazing independent creators and developers in the space! We are proud to say that we are doing exactly that, and are now ready to share our first project Clouded Crew. <brk>
+                We believe in creativity, dreams, and wandering. We encourage you all to let your curiosity guide you and to allow yourself to fully immerse in the creative process.
             </p>
             </div>
             </div>
