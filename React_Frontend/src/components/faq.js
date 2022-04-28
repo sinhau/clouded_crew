@@ -104,7 +104,7 @@ export default function FAQ({ myRef }) {
         <div className={open == 6 ? "FAQAnCon FAQShow" : "FAQAnCon"}>
           <h2>
             We are doing Twitter partnerships and giveaways, and will be hosting
-            community events/contests in the coming days. <br />
+            community events/contests in the coming days. <br/>
             Cloud Member = WL{" "}
           </h2>
         </div>
