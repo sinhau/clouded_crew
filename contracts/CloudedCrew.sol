@@ -4,8 +4,6 @@ pragma solidity ^0.8.11;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
-import "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 contract OwnableDelegateProxy {}
@@ -32,7 +30,7 @@ error InsufficientETH();
 error InvalidTokenID();
 
 /// @title CloudedCrew
-///@author Utkarsh Sinha <karsh@hey.com>
+///@author Karsh Sinha <karsh@hey.com>
 contract CloudedCrew is ERC1155, Ownable {
     /////////////////////////////////
     /// PUBLIC VARS
@@ -43,18 +41,18 @@ contract CloudedCrew is ERC1155, Ownable {
     bool public isSalePaused = false;
     mapping(address => bool) public didMintPresale;
     uint256 public currentTokenID = 1;
+    bytes32 public whitelist_merkle_tree_root;
+    uint256 public minting_fee = 0.03 ether;
 
     /////////////////////////////////
     /// CONSTANTS
     /////////////////////////////////
 
     string public constant METADATA_PROVENANCE_HASH =
-        "0x27df45b83a96bcb75c7dc6918f12fdc22120b800930ae129b3f18bfae68fb232"; //TODO: Create metadata provenance hash and store it here
+        "0x75d386a83afa5478f50744c2c7f7c96bd431c294f882e5b02cd2653ba33e106d";
     uint256 public constant MAX_NFT_SUPPLY = 3333;
     uint256 public constant FREE_NFT_SUPPLY = 333;
     uint256 public constant MAX_MINT_AMOUNT_PER_TRANSACTION = 3;
-    uint256 public constant MINTING_FEE = 0.03 ether;
-    bytes32 public immutable WHITELIST_MERKLE_TREE_ROOT;
 
     /////////////////////////////////
     /// PRIVATE VARS
@@ -99,7 +97,7 @@ contract CloudedCrew is ERC1155, Ownable {
         if (
             !MerkleProof.verify(
                 proof,
-                WHITELIST_MERKLE_TREE_ROOT,
+                whitelist_merkle_tree_root,
                 keccak256(abi.encodePacked(msg.sender))
             )
         ) {
@@ -123,7 +121,7 @@ contract CloudedCrew is ERC1155, Ownable {
     }
 
     modifier checkValue(uint256 quantity) {
-        if (msg.value < MINTING_FEE * quantity) {
+        if (msg.value < minting_fee * quantity) {
             revert InsufficientETH();
         }
         _;
@@ -142,13 +140,13 @@ contract CloudedCrew is ERC1155, Ownable {
 
     /// @notice Setting base metadata URI to unrevealed metadata during contract deployment. Once all NFTs have been minted, contract owner will update base metadata URI to point to the actual metadata.  To ensure that metadata for each NFT was set prior to contract deployment, we have stored the provenance hash of all metadata JSON files in the contract as METADATA_PROVENANCE_HASH.  This provenance hash was computed by hashing a list of hashes of JSON metadata object for each NFT in order from 1 to MAX_NFT_SUPPLY.  This was done in Python using the web3.solidityKeccak method
     constructor(
-        bytes32 whitelist_merkle_tree_root,
+        bytes32 _whitelist_merkle_tree_root,
         address payout_wallet,
         string memory baseMetadataURI,
         address proxyRegistryAddressOpensea
     ) ERC1155(baseMetadataURI) {
         name = "Clouded Crew";
-        WHITELIST_MERKLE_TREE_ROOT = whitelist_merkle_tree_root;
+        whitelist_merkle_tree_root = _whitelist_merkle_tree_root;
         _payout_wallet = payout_wallet;
         _PROXY_REGISTRY_ADDRESS = proxyRegistryAddressOpensea;
     }
@@ -228,6 +226,21 @@ contract CloudedCrew is ERC1155, Ownable {
     /// @param newPayoutWallet New payout wallet address
     function setPayoutWallet(address newPayoutWallet) external onlyOwner {
         _payout_wallet = newPayoutWallet;
+    }
+
+    /// @notice Update merkle tree root
+    /// @param newMerkleTreeRoot New merkle tree root
+    function updateWhitelistMerkleTreeRoot(bytes32 newMerkleTreeRoot)
+        external
+        onlyOwner
+    {
+        whitelist_merkle_tree_root = newMerkleTreeRoot;
+    }
+
+    /// @notice Update minting fee
+    /// @param newMintingFee New minting fee
+    function updateMintingFee(uint256 newMintingFee) external onlyOwner {
+        minting_fee = newMintingFee;
     }
 
     /////////////////////////////////

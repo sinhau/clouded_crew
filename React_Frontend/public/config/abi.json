@@ -3,7 +3,7 @@
     "inputs": [
       {
         "internalType": "bytes32",
-        "name": "whitelist_merkle_tree_root",
+        "name": "_whitelist_merkle_tree_root",
         "type": "bytes32"
       },
       {
@@ -260,32 +260,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "MINTING_FEE",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "WHITELIST_MERKLE_TREE_ROOT",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -452,6 +426,19 @@
     "name": "mintPresale",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "minting_fee",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -632,6 +619,19 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "newMintingFee",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateMintingFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bool",
         "name": "status",
         "type": "bool"
@@ -658,6 +658,19 @@
   {
     "inputs": [
       {
+        "internalType": "bytes32",
+        "name": "newMerkleTreeRoot",
+        "type": "bytes32"
+      }
+    ],
+    "name": "updateWhitelistMerkleTreeRoot",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
         "name": "tokenID",
         "type": "uint256"
@@ -669,6 +682,19 @@
         "internalType": "string",
         "name": "",
         "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "whitelist_merkle_tree_root",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
       }
     ],
     "stateMutability": "view",

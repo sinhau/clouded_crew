@@ -7,17 +7,19 @@ require("dotenv").config();
 describe("CloudedCrew", function () {
   before(async function () {
     this.accounts = await ethers.getSigners();
-    this.whitelist_account = new ethers.Wallet(
-      process.env.PRIVATE_KEY,
-      ethers.getDefaultProvider()
-    );
     this.owner = this.accounts[0];
+
     this.proxyRegistryAddressOpensea =
       "0x1E525EEAF261cA41b809884CBDE9DD9E1619573A";
-    this.baseMetadataURI =
-      "https://gateway.pinata.cloud/ipfs/Qmaxqbo2ZDBRYv7Ukw7L9B7dq2vUQqB1ysH6x5CLcDAVPa/";
 
-    this.whitelist = require("../whitelist.json");
+    this.baseMetadataURI =
+      "ipfs://Qmaxqbo2ZDBRYv7Ukw7L9B7dq2vUQqB1ysH6x5CLcDAVPa/";
+
+    this.whitelist = [];
+    // Loop through this.accounts and add them to this.whitelist
+    for (let i = 1; i < this.accounts.length; i++) {
+      this.whitelist.push(this.accounts[i].address);
+    }
 
     const leafNodes = this.whitelist.map((address) => keccak256(address));
     this.merkleTree = new MerkleTree(leafNodes, keccak256, {
@@ -51,7 +53,7 @@ describe("CloudedCrew", function () {
       await this.contract.updatePresaleStatus(false);
       await expect(
         this.contract.mintPresale(
-          this.merkleTree.getProof(keccak256(this.owner.address))
+          this.merkleTree.getHexProof(keccak256(this.owner.address))
         )
       ).to.be.revertedWith("PresaleNotActive()");
 
@@ -67,35 +69,43 @@ describe("CloudedCrew", function () {
     it("Should not be able to mint if address is not whitelisted", async function () {
       await expect(
         this.contract
-          .connect(this.accounts[1])
+          .connect(this.accounts[0])
           .mintPresale(
-            this.merkleTree.getHexProof(keccak256(this.accounts[1].address))
+            this.merkleTree.getHexProof(keccak256(this.accounts[0].address))
           )
       ).to.be.revertedWith("NotOnWhitelist()");
 
       expect(
-        await this.contract.balanceOf(this.whitelist_account.address, 1)
+        await this.contract.balanceOf(this.accounts[1].address, 1)
       ).to.equal(0);
       await this.contract
-        .connect(this.whitelist_account)
+        .connect(this.accounts[1])
         .mintPresale(
-          this.merkleTree.getHexProof(keccak256(this.whitelist_account.address))
+          this.merkleTree.getHexProof(keccak256(this.accounts[1].address))
         );
       expect(
-        await this.contract.balanceOf(this.whitelist_account.address, 1)
+        await this.contract.balanceOf(this.accounts[1].address, 1)
       ).to.equal(1);
     });
 
     it("Should not be able to mint more than 1 per whitelisted wallet", async function () {
-      expect(await this.contract.balanceOf(this.owner.address, 1)).to.equal(0);
-      await this.contract.mintPresale(
-        this.merkleTree.getHexProof(keccak256(this.owner.address))
-      );
-      expect(await this.contract.balanceOf(this.owner.address, 1)).to.equal(1);
+      expect(
+        await this.contract.balanceOf(this.accounts[2].address, 1)
+      ).to.equal(0);
+      await this.contract
+        .connect(this.accounts[2])
+        .mintPresale(
+          this.merkleTree.getHexProof(keccak256(this.accounts[2].address))
+        );
+      expect(
+        await this.contract.balanceOf(this.accounts[2].address, 1)
+      ).to.equal(1);
       await expect(
-        this.contract.mintPresale(
-          this.merkleTree.getHexProof(keccak256(this.owner.address))
-        )
+        this.contract
+          .connect(this.accounts[2])
+          .mintPresale(
+            this.merkleTree.getHexProof(keccak256(this.accounts[2].address))
+          )
       ).to.be.revertedWith("AlreadyMintedPresaleNFT()");
     });
 
@@ -198,6 +208,89 @@ describe("CloudedCrew", function () {
       });
       validNFTURI = this.baseMetadataURI + "1.json";
       expect(await this.contract.uri(1)).to.equal(validNFTURI);
+    });
+    it("Update whitelist merkle tree root", async function () {
+      this.whitelist.push(this.accounts[1].address);
+      const leafNodes = this.whitelist.map((address) => keccak256(address));
+      const merkleTree = new MerkleTree(leafNodes, keccak256, {
+        sortPairs: true,
+      });
+      await this.contract.updateWhitelistMerkleTreeRoot(
+        merkleTree.getHexRoot()
+      );
+      expect(await this.contract.whitelist_merkle_tree_root()).to.equal(
+        merkleTree.getHexRoot()
+      );
+    });
+    it("Should update whitelist merkle tree", async function () {
+      let whitelist = [];
+      // Loop through this.accounts and add them to this.whitelist
+      for (let i = 2; i < this.accounts.length; i++) {
+        whitelist.push(this.accounts[i].address);
+      }
+
+      let leafNodes = whitelist.map((address) => keccak256(address));
+      let merkleTree = new MerkleTree(leafNodes, keccak256, {
+        sortPairs: true,
+      });
+      await expect(
+        this.contract
+          .connect(this.accounts[1])
+          .updateWhitelistMerkleTreeRoot(merkleTree.getHexRoot())
+      ).to.be.revertedWith("Ownable: caller is not the owner");
+      this.contract.updateWhitelistMerkleTreeRoot(merkleTree.getHexRoot());
+
+      await expect(
+        this.contract
+          .connect(this.accounts[1])
+          .mintPresale(
+            merkleTree.getHexProof(keccak256(this.accounts[1].address))
+          )
+      ).to.be.revertedWith("NotOnWhitelist()");
+      expect(
+        await this.contract.balanceOf(this.accounts[1].address, 1)
+      ).to.equal(0);
+      await this.contract
+        .connect(this.accounts[2])
+        .mintPresale(
+          merkleTree.getHexProof(keccak256(this.accounts[2].address))
+        );
+      expect(
+        await this.contract.balanceOf(this.accounts[2].address, 1)
+      ).to.equal(1);
+    });
+    it("Update minting fee", async function () {
+      expect(await this.contract.minting_fee()).to.equal(
+        ethers.utils.parseEther("0.03")
+      );
+      await this.contract.updateMintingFee(ethers.utils.parseEther("0.06"));
+      expect(await this.contract.minting_fee()).to.equal(
+        ethers.utils.parseEther("0.06")
+      );
+
+      await this.contract.updatePresaleStatus(false);
+
+      expect(await this.contract.balanceOf(this.owner.address, 1)).to.equal(0);
+      await expect(
+        this.contract.batchMint(1, {
+          value: ethers.utils.parseEther("0.04"),
+        })
+      ).to.be.revertedWith("InsufficientETH()");
+      await this.contract.batchMint(1, {
+        value: ethers.utils.parseEther("0.06"),
+      });
+      expect(await this.contract.balanceOf(this.owner.address, 1)).to.equal(1);
+
+      await expect(
+        this.contract.batchMint(2, {
+          value: ethers.utils.parseEther("0.111111111"),
+        })
+      ).to.be.revertedWith("InsufficientETH()");
+      await this.contract.batchMint(2, {
+        value: ethers.utils.parseEther("0.12"),
+      });
+      expect(await this.contract.balanceOf(this.owner.address, 2)).to.equal(1);
+      expect(await this.contract.balanceOf(this.owner.address, 3)).to.equal(1);
     });
   });
 });
