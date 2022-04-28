@@ -76,7 +76,7 @@ describe("CloudedCrew", function () {
       ).to.be.revertedWith("NotOnWhitelist()");
 
       expect(
-        await this.contract.balanceOf(this.accounts[1].address, 1)
+        await this.contract.balanceOf(this.accounts[1].address, 34)
       ).to.equal(0);
       await this.contract
         .connect(this.accounts[1])
@@ -84,13 +84,13 @@ describe("CloudedCrew", function () {
           this.merkleTree.getHexProof(keccak256(this.accounts[1].address))
         );
       expect(
-        await this.contract.balanceOf(this.accounts[1].address, 1)
+        await this.contract.balanceOf(this.accounts[1].address, 34)
       ).to.equal(1);
     });
 
     it("Should not be able to mint more than 1 per whitelisted wallet", async function () {
       expect(
-        await this.contract.balanceOf(this.accounts[2].address, 1)
+        await this.contract.balanceOf(this.accounts[2].address, 34)
       ).to.equal(0);
       await this.contract
         .connect(this.accounts[2])
@@ -98,7 +98,7 @@ describe("CloudedCrew", function () {
           this.merkleTree.getHexProof(keccak256(this.accounts[2].address))
         );
       expect(
-        await this.contract.balanceOf(this.accounts[2].address, 1)
+        await this.contract.balanceOf(this.accounts[2].address, 34)
       ).to.equal(1);
       await expect(
         this.contract
@@ -124,7 +124,7 @@ describe("CloudedCrew", function () {
     it("Should be able to mint up to only 3 regular NFTs at a time with the right payment being made", async function () {
       await this.contract.updatePresaleStatus(false);
 
-      expect(await this.contract.balanceOf(this.owner.address, 1)).to.equal(0);
+      expect(await this.contract.balanceOf(this.owner.address, 34)).to.equal(0);
       await expect(
         this.contract.batchMint(1, {
           value: ethers.utils.parseEther("0.02"),
@@ -133,7 +133,7 @@ describe("CloudedCrew", function () {
       await this.contract.batchMint(1, {
         value: ethers.utils.parseEther("0.03"),
       });
-      expect(await this.contract.balanceOf(this.owner.address, 1)).to.equal(1);
+      expect(await this.contract.balanceOf(this.owner.address, 34)).to.equal(1);
 
       await expect(
         this.contract.batchMint(2, {
@@ -143,8 +143,8 @@ describe("CloudedCrew", function () {
       await this.contract.batchMint(2, {
         value: ethers.utils.parseEther("0.06"),
       });
-      expect(await this.contract.balanceOf(this.owner.address, 2)).to.equal(1);
-      expect(await this.contract.balanceOf(this.owner.address, 3)).to.equal(1);
+      expect(await this.contract.balanceOf(this.owner.address, 35)).to.equal(1);
+      expect(await this.contract.balanceOf(this.owner.address, 36)).to.equal(1);
 
       await expect(
         this.contract.batchMint(3, {
@@ -154,9 +154,9 @@ describe("CloudedCrew", function () {
       await this.contract.batchMint(3, {
         value: ethers.utils.parseEther("0.09"),
       });
-      expect(await this.contract.balanceOf(this.owner.address, 4)).to.equal(1);
-      expect(await this.contract.balanceOf(this.owner.address, 5)).to.equal(1);
-      expect(await this.contract.balanceOf(this.owner.address, 6)).to.equal(1);
+      expect(await this.contract.balanceOf(this.owner.address, 37)).to.equal(1);
+      expect(await this.contract.balanceOf(this.owner.address, 38)).to.equal(1);
+      expect(await this.contract.balanceOf(this.owner.address, 39)).to.equal(1);
 
       await expect(this.contract.batchMint(7)).to.be.revertedWith(
         "InvalidQuantity()"
@@ -166,7 +166,7 @@ describe("CloudedCrew", function () {
     it("Should not be able to mint more than 3333 NFTs", async function () {
       await this.contract.updatePresaleStatus(false);
 
-      for (let i = 0; i < 1111; i++) {
+      for (let i = 0; i < 1100; i++) {
         await this.contract.batchMint(3, {
           value: ethers.utils.parseEther("0.09"),
         });
@@ -201,7 +201,9 @@ describe("CloudedCrew", function () {
     it("Should provide valid NFT metadata URI for minted NFTs only", async function () {
       await this.contract.updatePresaleStatus(false);
 
-      await expect(this.contract.uri(1)).to.be.revertedWith("InvalidTokenID()");
+      await expect(this.contract.uri(34)).to.be.revertedWith(
+        "InvalidTokenID()"
+      );
 
       await this.contract.batchMint(1, {
         value: ethers.utils.parseEther("0.03"),
@@ -247,8 +249,9 @@ describe("CloudedCrew", function () {
             merkleTree.getHexProof(keccak256(this.accounts[1].address))
           )
       ).to.be.revertedWith("NotOnWhitelist()");
+
       expect(
-        await this.contract.balanceOf(this.accounts[1].address, 1)
+        await this.contract.balanceOf(this.accounts[2].address, 34)
       ).to.equal(0);
       await this.contract
         .connect(this.accounts[2])
@@ -256,7 +259,7 @@ describe("CloudedCrew", function () {
           merkleTree.getHexProof(keccak256(this.accounts[2].address))
         );
       expect(
-        await this.contract.balanceOf(this.accounts[2].address, 1)
+        await this.contract.balanceOf(this.accounts[2].address, 34)
       ).to.equal(1);
     });
     it("Update minting fee", async function () {
@@ -270,7 +273,7 @@ describe("CloudedCrew", function () {
 
       await this.contract.updatePresaleStatus(false);
 
-      expect(await this.contract.balanceOf(this.owner.address, 1)).to.equal(0);
+      expect(await this.contract.balanceOf(this.owner.address, 34)).to.equal(0);
       await expect(
         this.contract.batchMint(1, {
           value: ethers.utils.parseEther("0.04"),
@@ -279,7 +282,7 @@ describe("CloudedCrew", function () {
       await this.contract.batchMint(1, {
         value: ethers.utils.parseEther("0.06"),
       });
-      expect(await this.contract.balanceOf(this.owner.address, 1)).to.equal(1);
+      expect(await this.contract.balanceOf(this.owner.address, 34)).to.equal(1);
 
       await expect(
         this.contract.batchMint(2, {
@@ -289,8 +292,8 @@ describe("CloudedCrew", function () {
       await this.contract.batchMint(2, {
         value: ethers.utils.parseEther("0.12"),
       });
-      expect(await this.contract.balanceOf(this.owner.address, 2)).to.equal(1);
-      expect(await this.contract.balanceOf(this.owner.address, 3)).to.equal(1);
+      expect(await this.contract.balanceOf(this.owner.address, 35)).to.equal(1);
+      expect(await this.contract.balanceOf(this.owner.address, 36)).to.equal(1);
     });
   });
 });

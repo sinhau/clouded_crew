@@ -11,9 +11,9 @@ async function deployContract() {
     sortPairs: true,
   });
   const proxyRegistryAddressOpensea =
-    "0x1E525EEAF261cA41b809884CBDE9DD9E1619573A"; 
-    // 0x1E525EEAF261cA41b809884CBDE9DD9E1619573A //RINKEBY
-    // 0xa5409ec958c83c3f309868babaca7c86dcb077c1 // MAINNET
+    "0x1E525EEAF261cA41b809884CBDE9DD9E1619573A";
+  // 0x1E525EEAF261cA41b809884CBDE9DD9E1619573A //RINKEBY
+  // 0xa5409ec958c83c3f309868babaca7c86dcb077c1 // MAINNET
 
   // Deploy main contract
   console.log("---\nDeploying main contract");
@@ -21,7 +21,7 @@ async function deployContract() {
   const contractFactory = await ethers.getContractFactory("CloudedCrew");
   const contract = await contractFactory.deploy(
     merkleTree.getHexRoot(),
-    "0xdd175a204142040850211B529Dcb9af6eE743e1B",
+    process.env.PUBLIC_KEY,
     "ipfs://Qmaxqbo2ZDBRYv7Ukw7L9B7dq2vUQqB1ysH6x5CLcDAVPa/",
     proxyRegistryAddressOpensea
   );

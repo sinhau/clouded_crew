@@ -149,6 +149,16 @@ contract CloudedCrew is ERC1155, Ownable {
         whitelist_merkle_tree_root = _whitelist_merkle_tree_root;
         _payout_wallet = payout_wallet;
         _PROXY_REGISTRY_ADDRESS = proxyRegistryAddressOpensea;
+
+        uint256[] memory _ids = new uint256[](33);
+        uint256[] memory _numTokens = new uint256[](33);
+
+        for (uint256 i = 0; i < 33; i++) {
+            _ids[i] = currentTokenID + i;
+            _numTokens[i] = 1;
+        }
+        currentTokenID = currentTokenID + 33;
+        _mintBatch(msg.sender, _ids, _numTokens, "");
     }
 
     /////////////////////////////////
