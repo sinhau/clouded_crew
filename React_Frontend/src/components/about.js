@@ -17,7 +17,7 @@ export default function About({ myRef }) {
             developers in the space! We are proud to say that we are doing
             exactly that, and are now ready to share our first project Clouded
             Crew. 
-              <br>  We believe in creativity, dreams, and wandering. We encourage you
+              <br/>  We believe in creativity, dreams, and wandering. We encourage you
             all to let your curiosity guide you and to allow yourself to fully
             immerse in the creative process.
           </p>
