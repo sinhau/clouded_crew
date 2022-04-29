@@ -41,11 +41,6 @@ describe("CloudedCrew", function () {
     it("Contract owner should match hardhat owner address", async function () {
       expect(await this.contract.owner()).to.equal(this.owner.address);
     });
-
-    it("Contract metadata URI is valid", async function () {
-      validContractURI = this.baseMetadataURI + "contractMetadata.json";
-      expect(await this.contract.contractURI()).to.equal(validContractURI);
-    });
   });
 
   describe("Minting", function () {
@@ -194,8 +189,8 @@ describe("CloudedCrew", function () {
       ).to.be.revertedWith("Ownable: caller is not the owner");
 
       await this.contract.setBaseMetadataURI("test/");
-      validContractURI = "test/contractMetadata.json";
-      expect(await this.contract.contractURI()).to.equal(validContractURI);
+      validURI = "test/1.json";
+      expect(await this.contract.uri(1)).to.equal(validURI);
     });
 
     it("Should provide valid NFT metadata URI for minted NFTs only", async function () {

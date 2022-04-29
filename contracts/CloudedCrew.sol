@@ -218,11 +218,6 @@ contract CloudedCrew is ERC1155, Ownable {
         payable(_payout_wallet).transfer(address(this).balance);
     }
 
-    /// @dev Generate contract metadata URI
-    function contractURI() external view returns (string memory) {
-        return string(abi.encodePacked(super.uri(1), "contractMetadata.json"));
-    }
-
     /// @dev Will update the base metadata URI of NFTs
     /// @param newBaseMetadataURI New base URL
     function setBaseMetadataURI(string calldata newBaseMetadataURI)
