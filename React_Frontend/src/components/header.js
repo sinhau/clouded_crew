@@ -263,7 +263,7 @@ export default function Header({ myRef }) {
               {data.currentTokenID} / {CONFIG.MAX_SUPPLY}
             </h1>
             <h1>
-              1 NFT costs {CONFIG.PRE_DISPLAY_COST} {CONFIG.NETWORK.SYMBOL}
+              Last 1k NFTs cost {CONFIG.PRE_DISPLAY_COST} {CONFIG.NETWORK.SYMBOL}
             </h1>
             <h3>{blockchain.account != null && proof == null? "Minting address is not on whitelist" : null}</h3>
             {blockchain.account === "" ||
