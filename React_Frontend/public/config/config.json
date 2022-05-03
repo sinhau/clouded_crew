@@ -12,7 +12,7 @@
   "PRE_WEI_COST": 0,
   "PRE_DISPLAY_COST": 0,
   "WEI_COST": 30000000000000000,
-  "DISPLAY_COST": 0.03,
+  "DISPLAY_COST": 0.0333,
   "GAS_LIMIT": 285000,
   "MARKETPLACE": "Opeansea",
   "MARKETPLACE_LINK": "https://opensea.io/collection/nft",
