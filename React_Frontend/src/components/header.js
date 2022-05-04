@@ -310,7 +310,7 @@ export default function Header({ myRef }) {
               {data.currentTokenID} / {CONFIG.MAX_SUPPLY}
             </h1>
             <h1>
-              1 NFT costs {CONFIG.DISPLAY_COST} {CONFIG.NETWORK.SYMBOL}
+              Last 1k NFTs cost {CONFIG.DISPLAY_COST} {CONFIG.NETWORK.SYMBOL}
             </h1>
             {blockchain.account === "" || blockchain.smartContract === null ? (
               <>
