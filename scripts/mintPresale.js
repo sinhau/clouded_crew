@@ -33,8 +33,8 @@ async function getRevertReason(txHash) {
   return result;
 }
 
-async function mintPresale() {
-  console.log("Minting 1 presale Clouded Crew...");
+async function mintPresale(quantity) {
+  console.log(`Minting ${quantity} presale Clouded Crew...`);
 
   this.whitelist = require("../whitelist.json");
 
@@ -52,18 +52,24 @@ async function mintPresale() {
     nonce: nonce,
     gas: 150000,
     data: nftContract.methods
-      .mintPresale(this.merkleTree.getHexProof(keccak256(PUBLIC_KEY)))
+      .mintPresale(this.merkleTree.getHexProof(keccak256(PUBLIC_KEY)), quantity)
       .encodeABI(),
   };
 
   const signedTx = await web3.eth.accounts.signTransaction(tx, PRIVATE_KEY);
   try {
     const resp = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-    console.log("Minted 1 Clouded Crew!");
+    console.log(`Minted ${quantity} Clouded Crew!`);
   } catch (e) {
     const reason = await getRevertReason(e.receipt.transactionHash);
     console.log("Error:", reason.method);
   }
 }
 
-mintPresale();
+// get first argument from command line
+const args = process.argv.slice(2);
+if (args.length === 0) {
+  mintPresale(1);
+} else {
+  mintPresale(parseInt(args[0]));
+}

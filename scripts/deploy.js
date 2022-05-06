@@ -22,7 +22,7 @@ async function deployContract() {
   const contract = await contractFactory.deploy(
     merkleTree.getHexRoot(),
     process.env.PUBLIC_KEY,
-    "ipfs://Qmaxqbo2ZDBRYv7Ukw7L9B7dq2vUQqB1ysH6x5CLcDAVPa/",
+    "https://gateway.pinata.cloud/ipfs/QmVrLmQgrowmbMf1M9YseiQG6HN1ZHWwhaoui81V6wzahS/",
     proxyRegistryAddressOpensea
   );
 

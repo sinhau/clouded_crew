@@ -22,12 +22,13 @@ contract ProxyRegistry {
 error PresaleNotActive();
 error PresaleIsActive();
 error SalePaused();
-error AlreadyMintedPresaleNFT();
+error InvalidPresaleAmount();
 error NotOnWhitelist();
 error InvalidQuantity();
 error SoldOut();
 error InsufficientETH();
 error InvalidTokenID();
+error ReachedMintLimitPerWallet();
 
 /// @title CloudedCrew
 ///@author Karsh Sinha <karsh@hey.com>
@@ -39,10 +40,11 @@ contract CloudedCrew is ERC1155, Ownable {
     string public name;
     bool public isPresaleActive = true;
     bool public isSalePaused = false;
-    mapping(address => bool) public didMintPresale;
+    mapping(address => uint256) public presaleMintCount;
+    mapping(address => uint256) public generalSaleMintCount;
     uint256 public currentTokenID = 1;
     bytes32 public whitelist_merkle_tree_root;
-    uint256 public minting_fee = 0.03 ether;
+    uint256 public minting_fee = 0.0333 ether;
 
     /////////////////////////////////
     /// CONSTANTS
@@ -51,8 +53,8 @@ contract CloudedCrew is ERC1155, Ownable {
     string public constant METADATA_PROVENANCE_HASH =
         "0x75d386a83afa5478f50744c2c7f7c96bd431c294f882e5b02cd2653ba33e106d";
     uint256 public constant MAX_NFT_SUPPLY = 3333;
-    uint256 public constant FREE_NFT_SUPPLY = 333;
-    uint256 public constant MAX_MINT_AMOUNT_PER_TRANSACTION = 3;
+    uint256 public constant MAX_PRESALE_MINT_COUNT = 3;
+    uint256 public constant MAX_GENERAL_SALE_MINT_COUNT = 3;
 
     /////////////////////////////////
     /// PRIVATE VARS
@@ -86,9 +88,9 @@ contract CloudedCrew is ERC1155, Ownable {
         _;
     }
 
-    modifier checkPresaleAlreadyMinted() {
-        if (didMintPresale[msg.sender]) {
-            revert AlreadyMintedPresaleNFT();
+    modifier checkPresaleMintCount(uint256 quantity) {
+        if (presaleMintCount[msg.sender] + quantity > MAX_PRESALE_MINT_COUNT) {
+            revert InvalidPresaleAmount();
         }
         _;
     }
@@ -106,23 +108,25 @@ contract CloudedCrew is ERC1155, Ownable {
         _;
     }
 
-    modifier checkMaxMintAmount(uint256 quantity) {
-        if (quantity < 0 || quantity > MAX_MINT_AMOUNT_PER_TRANSACTION) {
-            revert InvalidQuantity();
-        }
-        _;
-    }
-
-    modifier checkSupply(uint256 quantity) {
-        if (quantity + currentTokenID - 1 > MAX_NFT_SUPPLY) {
+    modifier checkSupply() {
+        if (currentTokenID > MAX_NFT_SUPPLY) {
             revert SoldOut();
         }
         _;
     }
 
-    modifier checkValue(uint256 quantity) {
-        if (msg.value < minting_fee * quantity) {
-            revert InsufficientETH();
+    modifier checkValue() {
+        if (currentTokenID >= 2333) {
+            if (msg.value < minting_fee) {
+                revert InsufficientETH();
+            }
+        }
+        _;
+    }
+
+    modifier checkGeneralSaleMintCount() {
+        if (generalSaleMintCount[msg.sender] >= MAX_GENERAL_SALE_MINT_COUNT) {
+            revert ReachedMintLimitPerWallet();
         }
         _;
     }
@@ -167,28 +171,13 @@ contract CloudedCrew is ERC1155, Ownable {
 
     /// @dev Function to mint presale NFTs
     /// @param proof Merkle proof provided by the client
-    function mintPresale(bytes32[] calldata proof)
+    /// @param quantity Number of NFTs to mint
+    function mintPresale(bytes32[] calldata proof, uint256 quantity)
         external
         checkPresaleActive
         checkSaleStatus
         verifyWhitelist(proof)
-        checkPresaleAlreadyMinted
-    {
-        ++currentTokenID;
-        _updatePresaleMintStatus(msg.sender, true);
-        _mint(msg.sender, currentTokenID - 1, 1, "");
-    }
-
-    /// @dev Mint _quantity number of NFTs
-    /// @param quantity The number of NFTs to mint
-    function batchMint(uint256 quantity)
-        external
-        payable
-        checkPresaleInactive
-        checkSaleStatus
-        checkMaxMintAmount(quantity)
-        checkSupply(quantity)
-        checkValue(quantity)
+        checkPresaleMintCount(quantity)
     {
         uint256[] memory _ids = new uint256[](quantity);
         uint256[] memory _numTokens = new uint256[](quantity);
@@ -198,7 +187,23 @@ contract CloudedCrew is ERC1155, Ownable {
             _numTokens[i] = 1;
         }
         currentTokenID = currentTokenID + quantity;
+        presaleMintCount[msg.sender] += quantity;
         _mintBatch(msg.sender, _ids, _numTokens, "");
+    }
+
+    /// @dev Mint _quantity number of NFTs
+    function mintRegular()
+        external
+        payable
+        checkPresaleInactive
+        checkSaleStatus
+        checkSupply
+        checkGeneralSaleMintCount
+        checkValue
+    {
+        ++currentTokenID;
+        ++generalSaleMintCount[msg.sender];
+        _mint(msg.sender, currentTokenID - 1, 1, "");
     }
 
     /// @dev Function to start/pause the sale
@@ -214,7 +219,7 @@ contract CloudedCrew is ERC1155, Ownable {
     }
 
     /// @dev Withdraw full balance the splits contract
-    function withdrawFullBalance() external payable onlyOwner {
+    function withdraw() external onlyOwner {
         payable(_payout_wallet).transfer(address(this).balance);
     }
 
@@ -305,16 +310,5 @@ contract CloudedCrew is ERC1155, Ownable {
         }
 
         return super.isApprovedForAll(owner, operator);
-    }
-
-    /////////////////////////////////
-    /// PRIVATE METHODS
-    /////////////////////////////////
-
-    /// @dev Update mint status of whitelisted address
-    /// @param addr The address to update
-    /// @param status  The new status of the address
-    function _updatePresaleMintStatus(address addr, bool status) private {
-        didMintPresale[addr] = status;
     }
 }
