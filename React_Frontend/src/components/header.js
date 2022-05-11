@@ -150,8 +150,9 @@ export default function Header({ myRef }) {
       dispatch(fetchData(blockchain.account));
     } catch (err) {
       console.log("Unsuccessful: ", err);
-      const error = await getRevertReason(err.receipt.transactionHash);
-      setFeedback("Error while minting: " + error.method);
+      setFeedback(
+        `Error while minting.  Please check ${CONFIG.ERROR_CHECK_LINK}/${err.receipt.transactionHash} for more details.`
+      );
       setClaimingNft(false);
       dispatch(fetchData(blockchain.account));
     }

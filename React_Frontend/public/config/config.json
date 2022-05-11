@@ -1,6 +1,7 @@
 {
   "CONTRACT_ADDRESS": "0x802e7621432A62780fd5470D00999d8F20173FF1",
   "SCAN_LINK": "https://rinkeby.etherscan.io/address/0x802e7621432A62780fd5470D00999d8F20173FF1",
+  "ERROR_CHECK_LINK": "https://rinkeby.etherscan.io/tx",
   "NETWORK": {
     "NAME": "Rinkeby",
     "SYMBOL": "ETH",
