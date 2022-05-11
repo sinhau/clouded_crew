@@ -1197,10 +1197,10 @@ error SalePaused();
 error InvalidPresaleAmount();
 error NotOnWhitelist();
 error InvalidQuantity();
-error SoldOut();
 error InsufficientETH();
 error InvalidTokenID();
-error ReachedMintLimitPerWallet();
+error InvalidGeneralSaleQuantity();
+error FreeSupplyStillAvailable();
 
 /// @title CloudedCrew
 ///@author Karsh Sinha <karsh@hey.com>
@@ -1213,6 +1213,7 @@ contract CloudedCrew is ERC1155, Ownable {
     bool public isPresaleActive = true;
     bool public isSalePaused = false;
     mapping(address => uint256) public presaleMintCount;
+    mapping(address => uint256) public freeSupplyMintCount;
     mapping(address => uint256) public generalSaleMintCount;
     uint256 public currentTokenID = 1;
     bytes32 public whitelist_merkle_tree_root;
@@ -1225,8 +1226,10 @@ contract CloudedCrew is ERC1155, Ownable {
     string public constant METADATA_PROVENANCE_HASH =
         "0x75d386a83afa5478f50744c2c7f7c96bd431c294f882e5b02cd2653ba33e106d";
     uint256 public constant MAX_NFT_SUPPLY = 3333;
+    uint256 public constant MAX_FREE_SUPPLY = 2332;
     uint256 public constant MAX_PRESALE_MINT_COUNT = 3;
-    uint256 public constant MAX_GENERAL_SALE_MINT_COUNT = 3;
+    uint256 public constant MAX_FREE_SUPPLY_MINT_COUNT = 6;
+    uint256 public constant MAX_GENERAL_SALE_MINT_COUNT = 6;
 
     /////////////////////////////////
     /// PRIVATE VARS
@@ -1280,25 +1283,36 @@ contract CloudedCrew is ERC1155, Ownable {
         _;
     }
 
-    modifier checkSupply() {
-        if (currentTokenID > MAX_NFT_SUPPLY) {
-            revert SoldOut();
+    modifier checkMaxSupply(uint256 quantity) {
+        if (currentTokenID + quantity - 1 > MAX_NFT_SUPPLY) {
+            revert InvalidQuantity();
         }
         _;
     }
 
-    modifier checkValue() {
-        if (currentTokenID >= 2333) {
-            if (msg.value < minting_fee) {
-                revert InsufficientETH();
-            }
+    modifier checkFreeSupply(uint256 quantity) {
+        if (currentTokenID + quantity - 1 > MAX_FREE_SUPPLY) {
+            revert InvalidQuantity();
         }
         _;
     }
 
-    modifier checkGeneralSaleMintCount() {
-        if (generalSaleMintCount[msg.sender] >= MAX_GENERAL_SALE_MINT_COUNT) {
-            revert ReachedMintLimitPerWallet();
+    modifier checkFreeSupplyMintCount(uint256 quantity) {
+        if (
+            freeSupplyMintCount[msg.sender] + quantity >
+            MAX_FREE_SUPPLY_MINT_COUNT
+        ) {
+            revert InvalidQuantity();
+        }
+        _;
+    }
+
+    modifier checkGeneralSaleMintCount(uint256 quantity) {
+        if (
+            generalSaleMintCount[msg.sender] + quantity >
+            MAX_GENERAL_SALE_MINT_COUNT
+        ) {
+            revert InvalidGeneralSaleQuantity();
         }
         _;
     }
@@ -1306,6 +1320,20 @@ contract CloudedCrew is ERC1155, Ownable {
     modifier checkTokenID(uint256 tokenID) {
         if (tokenID > currentTokenID - 1 || tokenID <= 0) {
             revert InvalidTokenID();
+        }
+        _;
+    }
+
+    modifier checkValue(uint256 quantity) {
+        if (msg.value < quantity * minting_fee) {
+            revert InsufficientETH();
+        }
+        _;
+    }
+
+    modifier checkFreeSupplyDone() {
+        if (currentTokenID <= MAX_FREE_SUPPLY) {
+            revert FreeSupplyStillAvailable();
         }
         _;
     }
@@ -1363,19 +1391,49 @@ contract CloudedCrew is ERC1155, Ownable {
         _mintBatch(msg.sender, _ids, _numTokens, "");
     }
 
+    /// @dev Mint _quantity number of free NFTs
+    /// @param quantity Number of NFTs to mint
+    function mintFree(uint256 quantity)
+        external
+        checkPresaleInactive
+        checkSaleStatus
+        checkFreeSupplyMintCount(quantity)
+        checkFreeSupply(quantity)
+    {
+        uint256[] memory _ids = new uint256[](quantity);
+        uint256[] memory _numTokens = new uint256[](quantity);
+
+        for (uint256 i = 0; i < quantity; i++) {
+            _ids[i] = currentTokenID + i;
+            _numTokens[i] = 1;
+        }
+        currentTokenID = currentTokenID + quantity;
+        freeSupplyMintCount[msg.sender] += quantity;
+        _mintBatch(msg.sender, _ids, _numTokens, "");
+    }
+
     /// @dev Mint _quantity number of NFTs
-    function mintRegular()
+    /// @param quantity Number of NFTs to mint
+    function mintRegular(uint256 quantity)
         external
         payable
         checkPresaleInactive
         checkSaleStatus
-        checkSupply
-        checkGeneralSaleMintCount
-        checkValue
+        checkFreeSupplyDone
+        checkMaxSupply(quantity)
+        checkGeneralSaleMintCount(quantity)
+        checkValue(quantity)
     {
-        ++currentTokenID;
-        ++generalSaleMintCount[msg.sender];
-        _mint(msg.sender, currentTokenID - 1, 1, "");
+        uint256[] memory _ids = new uint256[](quantity);
+        uint256[] memory _numTokens = new uint256[](quantity);
+
+        for (uint256 i = 0; i < quantity; i++) {
+            _ids[i] = currentTokenID + i;
+            _numTokens[i] = 1;
+        }
+        currentTokenID = currentTokenID + quantity;
+        generalSaleMintCount[msg.sender] += quantity;
+        _mintBatch(msg.sender, _ids, _numTokens, "");
     }
 
     /// @dev Function to start/pause the sale
