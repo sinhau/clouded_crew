@@ -53,8 +53,8 @@ contract CloudedCrew is ERC1155, Ownable {
 
     string public constant METADATA_PROVENANCE_HASH =
         "0xf7be2e1dcabf611b83404e57c13cc31947115973d6716ba6a6f688a7209c4931";
-    uint256 public constant MAX_NFT_SUPPLY = 60;
-    uint256 public constant MAX_FREE_SUPPLY = 40;
+    uint256 public constant MAX_NFT_SUPPLY = 2332;
+    uint256 public constant MAX_FREE_SUPPLY = 3333;
     uint256 public constant MAX_PRESALE_MINT_COUNT = 3;
     uint256 public constant MAX_FREE_SUPPLY_MINT_COUNT = 6;
     uint256 public constant MAX_GENERAL_SALE_MINT_COUNT = 6;

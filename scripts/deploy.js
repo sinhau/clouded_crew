@@ -11,7 +11,7 @@ async function deployContract() {
     sortPairs: true,
   });
   const proxyRegistryAddressOpensea =
-    "0x1E525EEAF261cA41b809884CBDE9DD9E1619573A";
+    "0xa5409ec958c83c3f309868babaca7c86dcb077c1";
   // 0x1E525EEAF261cA41b809884CBDE9DD9E1619573A //RINKEBY
   // 0xa5409ec958c83c3f309868babaca7c86dcb077c1 // MAINNET
 

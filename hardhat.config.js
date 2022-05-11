@@ -22,6 +22,10 @@ module.exports = {
       url: RINKEBY_API_URL,
       accounts: [`0x${PRIVATE_KEY}`],
     },
+    mainnet: {
+      url: MAINNET_API_URL,
+      accounts: [`0x${PRIVATE_KEY}`],
+    },
   },
   gasReporter: {
     currency: "USD",
