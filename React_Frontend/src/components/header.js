@@ -180,7 +180,11 @@ export default function Header({ myRef }) {
   };
 
   const incrementMintAmount = () => {
-    const limit = preSale? 3 : data.currentTokenID<=2332? 1 : 6;
+    const limit = preSale
+      ? 3
+      : data.currentTokenID <= CONFIG.MAX_FREE_SUPPLY
+      ? 1
+      : 6;
     let newMintAmount = mintAmount + 1;
     if (newMintAmount > limit) {
       newMintAmount = limit;
@@ -228,7 +232,7 @@ export default function Header({ myRef }) {
   useEffect(() => {
     getPause().then((val) => setPause(val));
   }, []);
-  
+
   const [preSale, setPreSale] = useState();
 
   useEffect(() => {
@@ -242,7 +246,7 @@ export default function Header({ myRef }) {
           <div className="Logo" />
           <div className={"FlexContainer"} />
           <div className="SocCon">
-          <FaInstagram
+            <FaInstagram
               size={25}
               color={"#fff"}
               style={{ cursor: "pointer" }}
@@ -285,173 +289,197 @@ export default function Header({ myRef }) {
           )}
         </div>
       </div>
-      {pause?
-      <div ref={myRef} className={"Header"}>
-      <div className={"HeaderBg"}>
-        <div className="HeadMint">
-          <h1>The sale is temporarily paused!</h1>
-        </div>
-        </div>
-        </div>
-      :
-      <>
-      {preSale?
-      <div ref={myRef} className={"Header"}>
-        <div className={"HeaderBg"}>
-          <div className="HeadMint">
-            <h1>
-              {data.currentTokenID} / {CONFIG.MAX_SUPPLY}
-            </h1>
-            <h1 onClick={()=>console.log(blockchain)}>
-              First 2332 NFTs cost { data.currentTokenID<=2332? "0 ETH" : CONFIG.PRE_DISPLAY_COST + CONFIG.NETWORK.SYMBOL}
-            </h1>
-            <h3>{blockchain.account != null && proof == null? "Minting address is not on whitelist" : null}</h3>
-            {blockchain.account === "" ||
-            blockchain.smartContract === null || proof == null? (
-              <>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(connect());
-                    getData();
-                  }}
-                >
-                  Connect Wallet
-                </button>
-                {blockchain.errorMsg !== "" ? (
-                  <>
-                    <h3>{blockchain.errorMsg}</h3>
-                  </>
-                ) : null}
-              </>
-            ) : (
-              <>
-                <h3>{feedback}</h3>
-                <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: 20,
-                    }}
-                  >
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        decrementMintAmount();
-                      }}
-                    >
-                      -
-                    </button>
-                    <h1
-                      style={{ marginLeft: 20, marginRight: 20, marginTop: 15 }}
-                    >
-                      {mintAmount}
-                    </h1>
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        incrementMintAmount();
-                      }}
-                    >
-                      +
-                    </button>
-                  </div>
-                <button
-                  className={"MintBtn1"}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    claimPreNFTs()
-                    getData();
-                  }}
-                >
-                  {claimingNft ? "MINTING" : "MINT"}
-                </button>
-              </>
-            )}
+      {pause ? (
+        <div ref={myRef} className={"Header"}>
+          <div className={"HeaderBg"}>
+            <div className="HeadMint">
+              <h1>The sale is temporarily paused!</h1>
+            </div>
           </div>
         </div>
-      </div>
-      :
-      <div ref={myRef} className={"Header"}>
-        <div className={"HeaderBg"}>
-          <div className="HeadMint">
-            <h1>
-              {data.currentTokenID} / {CONFIG.MAX_SUPPLY}
-            </h1>
-            <h1>
-            {data.currentTokenID<=2332? "First 2332 NFTs cost" : "Last 1000 NFTs cost"} { data.currentTokenID<=2332? "0 ETH" : CONFIG.DISPLAY_COST + CONFIG.NETWORK.SYMBOL}
-            </h1>
-            {blockchain.account === "" || blockchain.smartContract === null ? (
-              <>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(connect());
-                    getData();
-                  }}
-                >
-                  Connect Wallet
-                </button>
-                {blockchain.errorMsg !== "" ? (
-                  <>
-                    <h3>{blockchain.errorMsg}</h3>
-                  </>
-                ) : null}
-              </>
-            ) : (
-              <>
-                <h3>{feedback}</h3>
-                {data.currentTokenID<=2332?
-              null
-              :  
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: 20,
-                    }}
-                  >
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        decrementMintAmount();
-                      }}
-                    >
-                      -
-                    </button>
-                    <h1
-                      style={{ marginLeft: 20, marginRight: 20, marginTop: 15 }}
-                    >
-                      {mintAmount}
-                    </h1>
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        incrementMintAmount();
-                      }}
-                    >
-                      +
-                    </button>
-                  </div>
-                  }
-                <button
-                  className={"MintBtn1"}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    data.currentTokenID<=2332? claimFreeNFTs() : claimNFTs();
-                    getData();
-                  }}
-                >
-                  {claimingNft ? "MINTING" : "MINT"}
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-      }
-      </>
-      }
+      ) : (
+        <>
+          {preSale ? (
+            <div ref={myRef} className={"Header"}>
+              <div className={"HeaderBg"}>
+                <div className="HeadMint">
+                  <h1>
+                    {data.currentTokenID} / {CONFIG.MAX_SUPPLY}
+                  </h1>
+                  <h1 onClick={() => console.log(blockchain)}>
+                    First {CONFIG.MAX_FREE_SUPPLY} NFTs cost{" "}
+                    {data.currentTokenID <= CONFIG.MAX_FREE_SUPPLY
+                      ? "0 ETH"
+                      : CONFIG.PRE_DISPLAY_COST + CONFIG.NETWORK.SYMBOL}
+                  </h1>
+                  <h3>
+                    {blockchain.account != null && proof == null
+                      ? "Minting address is not on whitelist"
+                      : null}
+                  </h3>
+                  {blockchain.account === "" ||
+                  blockchain.smartContract === null ||
+                  proof == null ? (
+                    <>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          dispatch(connect());
+                          getData();
+                        }}
+                      >
+                        Connect Wallet
+                      </button>
+                      {blockchain.errorMsg !== "" ? (
+                        <>
+                          <h3>{blockchain.errorMsg}</h3>
+                        </>
+                      ) : null}
+                    </>
+                  ) : (
+                    <>
+                      <h3>{feedback}</h3>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginBottom: 20,
+                        }}
+                      >
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            decrementMintAmount();
+                          }}
+                        >
+                          -
+                        </button>
+                        <h1
+                          style={{
+                            marginLeft: 20,
+                            marginRight: 20,
+                            marginTop: 15,
+                          }}
+                        >
+                          {mintAmount}
+                        </h1>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            incrementMintAmount();
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
+                      <button
+                        className={"MintBtn1"}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          claimPreNFTs();
+                          getData();
+                        }}
+                      >
+                        {claimingNft ? "MINTING" : "MINT"}
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div ref={myRef} className={"Header"}>
+              <div className={"HeaderBg"}>
+                <div className="HeadMint">
+                  <h1>
+                    {data.currentTokenID} / {CONFIG.MAX_SUPPLY}
+                  </h1>
+                  <h1>
+                    {data.currentTokenID <= CONFIG.MAX_FREE_SUPPLY
+                      ? `First ${CONFIG.MAX_FREE_SUPPLY} NFTs cost`
+                      : `Last ${
+                          CONFIG.MAX_SUPPLY - CONFIG.MAX_FREE_SUPPLY
+                        } NFTs cost`}{" "}
+                    {data.currentTokenID <= CONFIG.MAX_FREE_SUPPLY
+                      ? "0 ETH"
+                      : CONFIG.DISPLAY_COST + CONFIG.NETWORK.SYMBOL}
+                  </h1>
+                  {blockchain.account === "" ||
+                  blockchain.smartContract === null ? (
+                    <>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          dispatch(connect());
+                          getData();
+                        }}
+                      >
+                        Connect Wallet
+                      </button>
+                      {blockchain.errorMsg !== "" ? (
+                        <>
+                          <h3>{blockchain.errorMsg}</h3>
+                        </>
+                      ) : null}
+                    </>
+                  ) : (
+                    <>
+                      <h3>{feedback}</h3>
+                      {data.currentTokenID <= CONFIG.MAX_FREE_SUPPLY ? null : (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            marginBottom: 20,
+                          }}
+                        >
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              decrementMintAmount();
+                            }}
+                          >
+                            -
+                          </button>
+                          <h1
+                            style={{
+                              marginLeft: 20,
+                              marginRight: 20,
+                              marginTop: 15,
+                            }}
+                          >
+                            {mintAmount}
+                          </h1>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              incrementMintAmount();
+                            }}
+                          >
+                            +
+                          </button>
+                        </div>
+                      )}
+                      <button
+                        className={"MintBtn1"}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          data.currentTokenID <= CONFIG.MAX_FREE_SUPPLY
+                            ? claimFreeNFTs()
+                            : claimNFTs();
+                          getData();
+                        }}
+                      >
+                        {claimingNft ? "MINTING" : "MINT"}
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </>
+      )}
     </>
   );
 }
