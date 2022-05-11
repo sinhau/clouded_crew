@@ -171,11 +171,7 @@ export default function Header({ myRef }) {
   };
 
   const incrementMintAmount = () => {
-    const limit = preSale
-      ? 3
-      : data.currentTokenID <= CONFIG.MAX_FREE_SUPPLY
-      ? 1
-      : 6;
+    const limit = preSale ? 3 : 6;
     let newMintAmount = mintAmount + 1;
     if (newMintAmount > limit) {
       newMintAmount = limit;
@@ -299,10 +295,6 @@ export default function Header({ myRef }) {
                   </h1>
                   <h1 onClick={() => console.log(blockchain)}>
                     Mint up to 3 NFTs for free if you are on the whitelist.
-                    {/* First {CONFIG.MAX_FREE_SUPPLY} NFTs cost{" "}
-                    {data.currentTokenID <= CONFIG.MAX_FREE_SUPPLY
-                      ? "0 ETH"
-                      : CONFIG.PRE_DISPLAY_COST + CONFIG.NETWORK.SYMBOL} */}
                   </h1>
                   <h3>
                     {blockchain.account != null && proof == null
