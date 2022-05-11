@@ -380,7 +380,7 @@ export default function Header({ myRef }) {
                       ? `TOTAL FREE MINTED ${data.currentTokenID - 1} / ${
                           CONFIG.MAX_FREE_SUPPLY
                         }`
-                      : `TOTAL MINT ${data.currentTokenID - 1} / ${
+                      : `TOTAL MINTED ${data.currentTokenID - 1} / ${
                           CONFIG.MAX_SUPPLY
                         } `}
                   </h1>
