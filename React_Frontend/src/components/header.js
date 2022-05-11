@@ -133,34 +133,40 @@ export default function Header({ myRef }) {
     console.log("Merkle proof: ", proof);
     setFeedback(`Minting your ${CONFIG.NFT_NAME}...`);
     setClaimingNft(true);
-    blockchain.smartContract.methods
-      .mintPresale(proof, mintAmount)
-      .send({
-        gasLimit: String(totalGasLimit),
-        to: CONFIG.CONTRACT_ADDRESS,
-        from: blockchain.account,
-        value: totalCostWei,
-      })
-      .once("error", (err) => {
-        try {
-          var lines = err?.message.split("\n");
-          const tx = lines[12].slice(22, 88);
-          getRevertReason(tx);
+    try {
+      blockchain.smartContract.methods
+        .mintPresale(proof, mintAmount)
+        .send({
+          gasLimit: String(totalGasLimit),
+          to: CONFIG.CONTRACT_ADDRESS,
+          from: blockchain.account,
+          value: totalCostWei,
+        })
+        .once("error", (err) => {
+          try {
+            var lines = err?.message.split("\n");
+            const tx = lines[12].slice(22, 88);
+            getRevertReason(tx);
+            setClaimingNft(false);
+          } catch (err) {
+            console.log(err);
+            setFeedback("The transaction has been cancelled!");
+            setClaimingNft(false);
+          }
+        })
+        .then((receipt) => {
+          console.log(receipt);
+          setFeedback(
+            `WOW, the ${CONFIG.NFT_NAME} is yours! go visit Opensea.io to view it.`
+          );
           setClaimingNft(false);
-        } catch (err) {
-          console.log(err);
-          setFeedback("The transaction has been cancelled!");
-          setClaimingNft(false);
-        }
-      })
-      .then((receipt) => {
-        console.log(receipt);
-        setFeedback(
-          `WOW, the ${CONFIG.NFT_NAME} is yours! go visit Opensea.io to view it.`
-        );
-        setClaimingNft(false);
-        dispatch(fetchData(blockchain.account));
-      });
+          dispatch(fetchData(blockchain.account));
+        });
+    } catch (err) {
+      console.log(err);
+      getRevertReason(err.receipt.transactionHash);
+      setClaimingNft(false);
+    }
   };
 
   const getRevertReason = async (txHash) => {
