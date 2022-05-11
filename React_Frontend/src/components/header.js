@@ -71,9 +71,7 @@ export default function Header({ myRef }) {
       dispatch(fetchData(blockchain.account));
     } catch (err) {
       console.log("Unsuccessful: ", err);
-      setFeedback(
-        `Error while minting.\nPlease check ${CONFIG.ERROR_CHECK_LINK}/\n${err.receipt.transactionHash}\n for more details.`
-      );
+      setFeedback("Error while minting");
       setClaimingNft(false);
       dispatch(fetchData(blockchain.account));
     }
@@ -105,9 +103,7 @@ export default function Header({ myRef }) {
       dispatch(fetchData(blockchain.account));
     } catch (err) {
       console.log("Unsuccessful: ", err);
-      setFeedback(
-        `Error while minting.\nPlease check ${CONFIG.ERROR_CHECK_LINK}/\n${err.receipt.transactionHash}\n for more details.`
-      );
+      setFeedback("Error while minting");
       setClaimingNft(false);
       dispatch(fetchData(blockchain.account));
     }
@@ -140,9 +136,7 @@ export default function Header({ myRef }) {
       dispatch(fetchData(blockchain.account));
     } catch (err) {
       console.log("Unsuccessful: ", err);
-      setFeedback(
-        `Error while minting.\nPlease check ${CONFIG.ERROR_CHECK_LINK}/\n${err.receipt.transactionHash}\n for more details.`
-      );
+      setFeedback("Error while minting");
       setClaimingNft(false);
       dispatch(fetchData(blockchain.account));
     }
