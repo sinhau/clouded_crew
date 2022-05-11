@@ -1,6 +1,6 @@
 {
-  "CONTRACT_ADDRESS": "0x802e7621432A62780fd5470D00999d8F20173FF1",
-  "SCAN_LINK": "https://rinkeby.etherscan.io/address/0x802e7621432A62780fd5470D00999d8F20173FF1",
+  "CONTRACT_ADDRESS": "0x98c695cA013874ED54D76a1eb6a0F96BF2A802a5",
+  "SCAN_LINK": "https://rinkeby.etherscan.io/address/0x98c695cA013874ED54D76a1eb6a0F96BF2A802a5",
   "ERROR_CHECK_LINK": "https://rinkeby.etherscan.io/tx",
   "NETWORK": {
     "NAME": "Rinkeby",
@@ -9,8 +9,8 @@
   },
   "NFT_NAME": "Clouded Crew",
   "SYMBOL": "NFT",
-  "MAX_SUPPLY": 2332,
-  "MAX_FREE_SUPPLY": 3333,
+  "MAX_SUPPLY": 60,
+  "MAX_FREE_SUPPLY": 40,
   "PRE_WEI_COST": 0,
   "PRE_DISPLAY_COST": 0,
   "WEI_COST": 33300000000000000,

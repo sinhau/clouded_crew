@@ -6,7 +6,7 @@ require("dotenv").config();
 require("@nomiclabs/hardhat-waffle");
 require("hardhat-gas-reporter");
 
-const { RINKEBY_API_URL, PRIVATE_KEY } = process.env;
+const { RINKEBY_API_URL, PRIVATE_KEY, MAINNET_API_URL } = process.env;
 
 module.exports = {
   solidity: "0.8.11",
