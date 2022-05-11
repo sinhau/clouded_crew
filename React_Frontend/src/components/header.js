@@ -12,7 +12,7 @@ import Open from "../assets/open.png";
 import { getPresale } from "./getPresaleStatus";
 import { getPause } from "./getPauseStatus";
 const InputDataDecoder = require("ethereum-input-data-decoder");
-const contract_abi = require("../../../public/config/abi.json");
+const contract_abi = require("abi.json");
 
 export default function Header({ myRef }) {
   const decoder = new InputDataDecoder(contract_abi);
