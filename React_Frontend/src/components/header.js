@@ -11,8 +11,11 @@ import { FaTwitter, FaDiscord, FaInstagram } from "react-icons/fa";
 import Open from "../assets/open.png";
 import { getPresale } from "./getPresaleStatus";
 import { getPause } from "./getPauseStatus";
+const InputDataDecoder = require("ethereum-input-data-decoder");
+const contract_abi = require("../../../public/config/abi.json");
 
 export default function Header({ myRef }) {
+  const decoder = new InputDataDecoder(contract_abi);
   const { ethereum } = window;
   const web3 = new Web3(ethereum);
   const dispatch = useDispatch();
@@ -127,6 +130,7 @@ export default function Header({ myRef }) {
     let totalGasLimit = String(gasLimit * mintAmount);
     console.log("Cost: ", totalCostWei);
     console.log("Gas limit: ", totalGasLimit);
+    console.log("Merkle proof: ", proof);
     setFeedback(`Minting your ${CONFIG.NFT_NAME}...`);
     setClaimingNft(true);
     blockchain.smartContract.methods
@@ -160,14 +164,18 @@ export default function Header({ myRef }) {
   };
 
   const getRevertReason = async (txHash) => {
-    const val = await web3.eth.getTransaction(txHash);
+    const tx = await web3.eth.getTransaction(txHash);
+    web3.eth.handleRevert = true;
     try {
-      var err = await web3.eth.call(val);
-      console.log("dsd", err);
-    } catch (err) {
-      const firstLine = err?.message.match(/^.*$/m)[0];
-      const errMsg = firstLine.replace("execution reverted: ", "");
-      setFeedback(errMsg);
+      var err = await web3.eth.call(tx, tx.blockNumber);
+      console.log("Tx error: ", err);
+    } catch (e) {
+      console.log("Revert error: ", e);
+      var result = decoder.decodeData(e.data);
+      if (result.method == null) {
+        result.method = e.reason;
+      }
+      setFeedback(result.method);
     }
   };
 
@@ -307,8 +315,7 @@ export default function Header({ myRef }) {
                     {data.currentTokenID} / {CONFIG.MAX_SUPPLY}
                   </h1>
                   <h1 onClick={() => console.log(blockchain)}>
-                    Mint up to 3 NFTs for free 
-                    if you are on the whitelist.
+                    Mint up to 3 NFTs for free if you are on the whitelist.
                     {/* First {CONFIG.MAX_FREE_SUPPLY} NFTs cost{" "}
                     {data.currentTokenID <= CONFIG.MAX_FREE_SUPPLY
                       ? "0 ETH"
