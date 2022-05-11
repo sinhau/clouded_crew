@@ -149,8 +149,9 @@ export default function Header({ myRef }) {
       setClaimingNft(false);
       dispatch(fetchData(blockchain.account));
     } catch (err) {
-      console.log(err);
-      getRevertReason(err.receipt.transactionHash);
+      console.log("Unsuccessful: ", err);
+      const error = await getRevertReason(err.receipt.transactionHash);
+      setFeedback("Error while minting: " + error.method);
       setClaimingNft(false);
       dispatch(fetchData(blockchain.account));
     }
@@ -202,7 +203,8 @@ export default function Header({ myRef }) {
       if (result.method == null) {
         result.method = e.reason;
       }
-      setFeedback(result.method);
+
+      return result;
     }
   };
 
