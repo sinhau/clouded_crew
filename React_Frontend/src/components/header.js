@@ -54,34 +54,29 @@ export default function Header({ myRef }) {
     console.log("Gas limit: ", totalGasLimit);
     setFeedback(`Minting your ${CONFIG.NFT_NAME}...`);
     setClaimingNft(true);
-    blockchain.smartContract.methods
-      .mintFree(mintAmount)
-      .send({
-        gasLimit: String(totalGasLimit),
-        to: CONFIG.CONTRACT_ADDRESS,
-        from: blockchain.account,
-        value: totalCostWei,
-      })
-      .once("error", (err) => {
-        try {
-          var lines = err?.message.split("\n");
-          const tx = lines[12].slice(22, 88);
-          getRevertReason(tx);
-          setClaimingNft(false);
-        } catch (err) {
-          console.log(err);
-          setFeedback("The transaction has been cancelled!");
-          setClaimingNft(false);
-        }
-      })
-      .then((receipt) => {
-        console.log(receipt);
-        setFeedback(
-          `WOW, the ${CONFIG.NFT_NAME} is yours! go visit Opensea.io to view it.`
-        );
-        setClaimingNft(false);
-        dispatch(fetchData(blockchain.account));
-      });
+    try {
+      const receipt = await blockchain.smartContract.methods
+        .mintFree(mintAmount)
+        .send({
+          gasLimit: String(totalGasLimit),
+          to: CONFIG.CONTRACT_ADDRESS,
+          from: blockchain.account,
+          value: totalCostWei,
+        });
+      console.log("Successful: ", receipt);
+      setFeedback(
+        `WOW, the ${CONFIG.NFT_NAME} is yours! Visit Opensea.io to view it.`
+      );
+      setClaimingNft(false);
+      dispatch(fetchData(blockchain.account));
+    } catch (err) {
+      console.log("Unsuccessful: ", err);
+      setFeedback(
+        `Error while minting.\nPlease check ${CONFIG.ERROR_CHECK_LINK}/\n${err.receipt.transactionHash}\n for more details.`
+      );
+      setClaimingNft(false);
+      dispatch(fetchData(blockchain.account));
+    }
   };
 
   const claimNFTs = () => {
@@ -93,34 +88,29 @@ export default function Header({ myRef }) {
     console.log("Gas limit: ", totalGasLimit);
     setFeedback(`Minting your ${CONFIG.NFT_NAME}...`);
     setClaimingNft(true);
-    blockchain.smartContract.methods
-      .mintRegular(mintAmount)
-      .send({
-        gasLimit: String(totalGasLimit),
-        to: CONFIG.CONTRACT_ADDRESS,
-        from: blockchain.account,
-        value: totalCostWei,
-      })
-      .once("error", (err) => {
-        try {
-          var lines = err?.message.split("\n");
-          const tx = lines[12].slice(22, 88);
-          getRevertReason(tx);
-          setClaimingNft(false);
-        } catch (err) {
-          console.log(err);
-          setFeedback("The transaction has been cancelled!");
-          setClaimingNft(false);
-        }
-      })
-      .then((receipt) => {
-        console.log(receipt);
-        setFeedback(
-          `WOW, the ${CONFIG.NFT_NAME} is yours! go visit Opensea.io to view it.`
-        );
-        setClaimingNft(false);
-        dispatch(fetchData(blockchain.account));
-      });
+    try {
+      const receipt = await blockchain.smartContract.methods
+        .mintRegular(mintAmount)
+        .send({
+          gasLimit: String(totalGasLimit),
+          to: CONFIG.CONTRACT_ADDRESS,
+          from: blockchain.account,
+          value: totalCostWei,
+        });
+      console.log("Successful: ", receipt);
+      setFeedback(
+        `WOW, the ${CONFIG.NFT_NAME} is yours! Visit Opensea.io to view it.`
+      );
+      setClaimingNft(false);
+      dispatch(fetchData(blockchain.account));
+    } catch (err) {
+      console.log("Unsuccessful: ", err);
+      setFeedback(
+        `Error while minting.\nPlease check ${CONFIG.ERROR_CHECK_LINK}/\n${err.receipt.transactionHash}\n for more details.`
+      );
+      setClaimingNft(false);
+      dispatch(fetchData(blockchain.account));
+    }
   };
 
   const claimPreNFTs = async () => {
@@ -151,45 +141,11 @@ export default function Header({ myRef }) {
     } catch (err) {
       console.log("Unsuccessful: ", err);
       setFeedback(
-        `Error while minting.  Please check ${CONFIG.ERROR_CHECK_LINK}/${err.receipt.transactionHash} for more details.`
+        `Error while minting.\nPlease check ${CONFIG.ERROR_CHECK_LINK}/\n${err.receipt.transactionHash}\n for more details.`
       );
       setClaimingNft(false);
       dispatch(fetchData(blockchain.account));
     }
-    // try {
-    //   blockchain.smartContract.methods
-    //     .mintPresale(proof, mintAmount)
-    //     .send({
-    //       gasLimit: String(totalGasLimit),
-    //       to: CONFIG.CONTRACT_ADDRESS,
-    //       from: blockchain.account,
-    //       value: totalCostWei,
-    //     })
-    //     .once("error", (err) => {
-    //       try {
-    //         var lines = err?.message.split("\n");
-    //         const tx = lines[12].slice(22, 88);
-    //         getRevertReason(tx);
-    //         setClaimingNft(false);
-    //       } catch (err) {
-    //         console.log(err);
-    //         setFeedback("The transaction has been cancelled!");
-    //         setClaimingNft(false);
-    //       }
-    //     })
-    //     .then((receipt) => {
-    //       console.log(receipt);
-    //       setFeedback(
-    //         `WOW, the ${CONFIG.NFT_NAME} is yours! go visit Opensea.io to view it.`
-    //       );
-    //       setClaimingNft(false);
-    //       dispatch(fetchData(blockchain.account));
-    //     });
-    // } catch (err) {
-    //   console.log(err);
-    //   getRevertReason(err.receipt.transactionHash);
-    //   setClaimingNft(false);
-    // }
   };
 
   const getRevertReason = async (txHash) => {
