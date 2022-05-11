@@ -417,7 +417,7 @@ export default function Header({ myRef }) {
                   ) : (
                     <>
                       <h3>{feedback}</h3>
-                      {data.currentTokenID <= CONFIG.MAX_FREE_SUPPLY ? null : (
+                      {
                         <div
                           style={{
                             display: "flex",
@@ -451,7 +451,7 @@ export default function Header({ myRef }) {
                             +
                           </button>
                         </div>
-                      )}
+                      }
                       <button
                         className={"MintBtn1"}
                         onClick={(e) => {
