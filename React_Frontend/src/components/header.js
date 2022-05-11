@@ -42,6 +42,45 @@ export default function Header({ myRef }) {
     SHOW_BACKGROUND: false,
   });
 
+  const claimFreeNFTs = () => {
+    let cost = CONFIG.PRE_WEI_COST;
+    let gasLimit = CONFIG.GAS_LIMIT;
+    let totalCostWei = String(cost * mintAmount);
+    let totalGasLimit = String(gasLimit * mintAmount);
+    console.log("Cost: ", totalCostWei);
+    console.log("Gas limit: ", totalGasLimit);
+    setFeedback(`Minting your ${CONFIG.NFT_NAME}...`);
+    setClaimingNft(true);
+    blockchain.smartContract.methods
+      .mintFree(mintAmount)
+      .send({
+        gasLimit: String(totalGasLimit),
+        to: CONFIG.CONTRACT_ADDRESS,
+        from: blockchain.account,
+        value: totalCostWei,
+      })
+      .once("error", (err) => {
+        try {
+          var lines = err?.message.split("\n");
+          const tx = lines[12].slice(22, 88);
+          getRevertReason(tx);
+          setClaimingNft(false);
+        } catch (err) {
+          console.log(err);
+          setFeedback("The transaction has been cancelled!");
+          setClaimingNft(false);
+        }
+      })
+      .then((receipt) => {
+        console.log(receipt);
+        setFeedback(
+          `WOW, the ${CONFIG.NFT_NAME} is yours! go visit Opensea.io to view it.`
+        );
+        setClaimingNft(false);
+        dispatch(fetchData(blockchain.account));
+      });
+  };
+
   const claimNFTs = () => {
     let cost = CONFIG.WEI_COST;
     let gasLimit = CONFIG.GAS_LIMIT;
@@ -52,7 +91,7 @@ export default function Header({ myRef }) {
     setFeedback(`Minting your ${CONFIG.NFT_NAME}...`);
     setClaimingNft(true);
     blockchain.smartContract.methods
-      .batchMint(mintAmount)
+      .mintRegular(mintAmount)
       .send({
         gasLimit: String(totalGasLimit),
         to: CONFIG.CONTRACT_ADDRESS,
@@ -91,7 +130,7 @@ export default function Header({ myRef }) {
     setFeedback(`Minting your ${CONFIG.NFT_NAME}...`);
     setClaimingNft(true);
     blockchain.smartContract.methods
-      .mintPresale(proof)
+      .mintPresale(proof, mintAmount)
       .send({
         gasLimit: String(totalGasLimit),
         to: CONFIG.CONTRACT_ADDRESS,
@@ -141,9 +180,10 @@ export default function Header({ myRef }) {
   };
 
   const incrementMintAmount = () => {
+    const limit = preSale? 3 : data.currentTokenID<=2332? 1 : 6;
     let newMintAmount = mintAmount + 1;
-    if (newMintAmount > 3) {
-      newMintAmount = 3;
+    if (newMintAmount > limit) {
+      newMintAmount = limit;
     }
     setMintAmount(newMintAmount);
   };
@@ -262,8 +302,8 @@ export default function Header({ myRef }) {
             <h1>
               {data.currentTokenID} / {CONFIG.MAX_SUPPLY}
             </h1>
-            <h1>
-              Last 1k NFTs cost {CONFIG.PRE_DISPLAY_COST} {CONFIG.NETWORK.SYMBOL}
+            <h1 onClick={()=>console.log(blockchain)}>
+              First 2332 NFTs cost { data.currentTokenID<=2332? "0 ETH" : CONFIG.PRE_DISPLAY_COST + CONFIG.NETWORK.SYMBOL}
             </h1>
             <h3>{blockchain.account != null && proof == null? "Minting address is not on whitelist" : null}</h3>
             {blockchain.account === "" ||
@@ -287,52 +327,7 @@ export default function Header({ myRef }) {
             ) : (
               <>
                 <h3>{feedback}</h3>
-                <button
-                  className={"MintBtn1"}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    claimPreNFTs()
-                    getData();
-                  }}
-                >
-                  {claimingNft ? "MINTING" : "MINT"}
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-      :
-      <div ref={myRef} className={"Header"}>
-        <div className={"HeaderBg"}>
-          <div className="HeadMint">
-            <h1>
-              {data.currentTokenID} / {CONFIG.MAX_SUPPLY}
-            </h1>
-            <h1>
-              Last 1k NFTs cost {CONFIG.DISPLAY_COST} {CONFIG.NETWORK.SYMBOL}
-            </h1>
-            {blockchain.account === "" || blockchain.smartContract === null ? (
-              <>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(connect());
-                    getData();
-                  }}
-                >
-                  Connect Wallet
-                </button>
-                {blockchain.errorMsg !== "" ? (
-                  <>
-                    <h3>{blockchain.errorMsg}</h3>
-                  </>
-                ) : null}
-              </>
-            ) : (
-              <>
-                <h3>{feedback}</h3>
-                  <div
+                <div
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -365,7 +360,85 @@ export default function Header({ myRef }) {
                   className={"MintBtn1"}
                   onClick={(e) => {
                     e.preventDefault();
-                    claimNFTs();
+                    claimPreNFTs()
+                    getData();
+                  }}
+                >
+                  {claimingNft ? "MINTING" : "MINT"}
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+      :
+      <div ref={myRef} className={"Header"}>
+        <div className={"HeaderBg"}>
+          <div className="HeadMint">
+            <h1>
+              {data.currentTokenID} / {CONFIG.MAX_SUPPLY}
+            </h1>
+            <h1>
+            {data.currentTokenID<=2332? "First 2332 NFTs cost" : "Last 1000 NFTs cost"} { data.currentTokenID<=2332? "0 ETH" : CONFIG.DISPLAY_COST + CONFIG.NETWORK.SYMBOL}
+            </h1>
+            {blockchain.account === "" || blockchain.smartContract === null ? (
+              <>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    dispatch(connect());
+                    getData();
+                  }}
+                >
+                  Connect Wallet
+                </button>
+                {blockchain.errorMsg !== "" ? (
+                  <>
+                    <h3>{blockchain.errorMsg}</h3>
+                  </>
+                ) : null}
+              </>
+            ) : (
+              <>
+                <h3>{feedback}</h3>
+                {data.currentTokenID<=2332?
+              null
+              :  
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: 20,
+                    }}
+                  >
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        decrementMintAmount();
+                      }}
+                    >
+                      -
+                    </button>
+                    <h1
+                      style={{ marginLeft: 20, marginRight: 20, marginTop: 15 }}
+                    >
+                      {mintAmount}
+                    </h1>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        incrementMintAmount();
+                      }}
+                    >
+                      +
+                    </button>
+                  </div>
+                  }
+                <button
+                  className={"MintBtn1"}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    data.currentTokenID<=2332? claimFreeNFTs() : claimNFTs();
                     getData();
                   }}
                 >
