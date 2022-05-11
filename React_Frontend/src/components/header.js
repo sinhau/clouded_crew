@@ -45,7 +45,7 @@ export default function Header({ myRef }) {
     SHOW_BACKGROUND: false,
   });
 
-  const claimFreeNFTs = () => {
+  const claimFreeNFTs = async () => {
     let cost = CONFIG.PRE_WEI_COST;
     let gasLimit = CONFIG.GAS_LIMIT;
     let totalCostWei = String(cost * mintAmount);
@@ -79,7 +79,7 @@ export default function Header({ myRef }) {
     }
   };
 
-  const claimNFTs = () => {
+  const claimNFTs = async () => {
     let cost = CONFIG.WEI_COST;
     let gasLimit = CONFIG.GAS_LIMIT;
     let totalCostWei = String(cost * mintAmount);
