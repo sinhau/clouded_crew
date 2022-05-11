@@ -376,14 +376,14 @@ export default function Header({ myRef }) {
               <div className={"HeaderBg"}>
                 <div className="HeadMint">
                   <h1>
-                    {data.currentTokenID} / {CONFIG.MAX_SUPPLY}
+                    {data.currentTokenID <= CONFIG.MAX_FREE_SUPPLY
+                      ? `FREE MINTED ${data.currentTokenID} / ${CONFIG.MAX_FREE_SUPPLY}`
+                      : `MINT ${data.currentTokenID} / ${CONFIG.MAX_SUPPLY} `}
                   </h1>
                   <h1>
                     {data.currentTokenID <= CONFIG.MAX_FREE_SUPPLY
-                      ? `First ${CONFIG.MAX_FREE_SUPPLY} NFTs cost`
-                      : `Last ${
-                          CONFIG.MAX_SUPPLY - CONFIG.MAX_FREE_SUPPLY
-                        } NFTs cost`}{" "}
+                      ? `NFTs cost `
+                      : `NFTs cost `}
                     {data.currentTokenID <= CONFIG.MAX_FREE_SUPPLY
                       ? "0 ETH"
                       : CONFIG.DISPLAY_COST + CONFIG.NETWORK.SYMBOL}
