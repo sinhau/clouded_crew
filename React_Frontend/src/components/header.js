@@ -42,6 +42,9 @@ export default function Header({ myRef }) {
     GAS_LIMIT: 0,
     MARKETPLACE: "",
     MARKETPLACE_LINK: "",
+    INSTAGRAM_LINK: "",
+    TWITTER_LINK: "",
+    DISCORD_LINK: "",
     SHOW_BACKGROUND: false,
   });
 
@@ -238,24 +241,24 @@ export default function Header({ myRef }) {
               size={25}
               color={"#fff"}
               style={{ cursor: "pointer" }}
-              onClick={() => window.open("https://instagram.com/")}
+              onClick={() => window.open(CONFIG.INSTAGRAM_LINK)}
             />
             <FaTwitter
               size={25}
               color={"#fff"}
               style={{ cursor: "pointer" }}
-              onClick={() => window.open("https://twitter.com/")}
+              onClick={() => window.open(CONFIG.TWITTER_LINK)}
             />
             <FaDiscord
               size={30}
               color={"#fff"}
               style={{ cursor: "pointer" }}
-              onClick={() => window.open("https://discord.gg/")}
+              onClick={() => window.open(CONFIG.DISCORD_LINK)}
             />
             <img
               style={{ height: 25, width: 25, cursor: "pointer" }}
               src={Open}
-              onClick={() => window.open("https://opensea.io/")}
+              onClick={() => window.open(CONFIG.MARKETPLACE_LINK)}
             />
           </div>
           {blockchain.account ? (
