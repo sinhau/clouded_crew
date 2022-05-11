@@ -291,7 +291,7 @@ export default function Header({ myRef }) {
               <div className={"HeaderBg"}>
                 <div className="HeadMint">
                   <h1>
-                    {data.currentTokenID} / {CONFIG.MAX_SUPPLY}
+                    TOTAL MINTED {data.currentTokenID - 1} / {CONFIG.MAX_SUPPLY}
                   </h1>
                   <h1 onClick={() => console.log(blockchain)}>
                     Mint up to 3 NFTs for free if you are on the whitelist.
@@ -377,8 +377,12 @@ export default function Header({ myRef }) {
                 <div className="HeadMint">
                   <h1>
                     {data.currentTokenID <= CONFIG.MAX_FREE_SUPPLY
-                      ? `FREE MINTED ${data.currentTokenID} / ${CONFIG.MAX_FREE_SUPPLY}`
-                      : `MINT ${data.currentTokenID} / ${CONFIG.MAX_SUPPLY} `}
+                      ? `TOTAL FREE MINTED ${data.currentTokenID - 1} / ${
+                          CONFIG.MAX_FREE_SUPPLY
+                        }`
+                      : `TOTAL MINT ${data.currentTokenID - 1} / ${
+                          CONFIG.MAX_SUPPLY
+                        } `}
                   </h1>
                   <h1>
                     {data.currentTokenID <= CONFIG.MAX_FREE_SUPPLY
