@@ -123,7 +123,7 @@ export default function Header({ myRef }) {
       });
   };
 
-  const claimPreNFTs = () => {
+  const claimPreNFTs = async () => {
     let cost = CONFIG.PRE_WEI_COST;
     let gasLimit = CONFIG.GAS_LIMIT;
     let totalCostWei = String(cost * mintAmount);
