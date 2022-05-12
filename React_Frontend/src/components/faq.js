@@ -66,7 +66,8 @@ export default function FAQ({ myRef }) {
         </div>
         <div className={open == 3 ? "FAQAnCon FAQShow" : "FAQAnCon"}>
           <h2>
-            All WL mints (333) will be FREE + Gas. Remaining will be TBA in ETH.
+            All WL mints (333) will be FREE + Gas. After the WL mint, up until token ID 
+            2334 will be free, the remaining 1000 will cost 0.0333 ETH.
             It was important to us to make this collection on the cheaper side,
             with seeing many cash grabby looking projects in the market at the
             moment.
@@ -80,8 +81,9 @@ export default function FAQ({ myRef }) {
         </div>
         <div className={open == 4 ? "FAQAnCon FAQShow" : "FAQAnCon"}>
           <h2>
-            Yes, the maximum limit to mint per wallet during the WL sale will be
-            1 and 3 per transaction during the public sale.
+            Yes, the maximum limit to mint per wallet during the WL sale will be up to
+            3 per wallet. WL minters may also mint up to 6 per wallet during the public sale.
+            Public minters can mint up to 6 per wallet. The max per transaction is up to 6. 
           </h2>
         </div>
         <div className="FAQQuCon" onClick={() => onOpen(5)}>
@@ -92,7 +94,7 @@ export default function FAQ({ myRef }) {
         </div>
         <div className={open == 5 ? "FAQAnCon FAQShow" : "FAQAnCon"}>
           <h2>
-            TBA - follow us on our Twitter and Discord for updated information.
+            The mint is scheduled on May 12 but follow us on our Twitter and Discord for the most up to date information.
           </h2>
         </div>
         <div className="FAQQuCon" onClick={() => onOpen(6)}>
