@@ -67,7 +67,7 @@ export default function FAQ({ myRef }) {
         <div className={open == 3 ? "FAQAnCon FAQShow" : "FAQAnCon"}>
           <h2>
             All WL mints (333) will be FREE + Gas. After the WL mint, up until token ID 
-            2334 will be free, the remaining 1000 will cost 0.0333 ETH.
+            2333 will be free, the remaining 1000 will cost 0.0333 ETH.
             It was important to us to make this collection on the cheaper side,
             with seeing many cash grabby looking projects in the market at the
             moment.
@@ -82,8 +82,7 @@ export default function FAQ({ myRef }) {
         <div className={open == 4 ? "FAQAnCon FAQShow" : "FAQAnCon"}>
           <h2>
             Yes, the maximum limit to mint per wallet during the WL sale will be up to
-            3 per wallet. WL minters may also mint up to 6 per wallet during the public sale.
-            Public minters can mint up to 6 per wallet. The max per transaction is up to 6. 
+            3 per wallet. WL minters and public minters may also mint up to 6 free and 6 paid NFTs per wallet during the public sale. The max per transaction is up to 6. 
           </h2>
         </div>
         <div className="FAQQuCon" onClick={() => onOpen(5)}>
