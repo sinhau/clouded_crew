@@ -7,7 +7,7 @@ import {
 import { fetchData } from "../redux/data/dataActions";
 import { handler } from "../api/index";
 import Web3 from "web3";
-import { FaTwitter, FaDiscord, FaInstagram } from "react-icons/fa";
+import { FaTwitter, FaDiscord } from "react-icons/fa";
 import Open from "../assets/open.png";
 import { getPresale } from "./getPresaleStatus";
 import { getPause } from "./getPauseStatus";
@@ -42,7 +42,6 @@ export default function Header({ myRef }) {
     GAS_LIMIT: 0,
     MARKETPLACE: "",
     MARKETPLACE_LINK: "",
-    INSTAGRAM_LINK: "",
     TWITTER_LINK: "",
     DISCORD_LINK: "",
     SHOW_BACKGROUND: false,
@@ -233,12 +232,6 @@ export default function Header({ myRef }) {
           <div className="Logo" />
           <div className={"FlexContainer"} />
           <div className="SocCon">
-            <FaInstagram
-              size={25}
-              color={"#fff"}
-              style={{ cursor: "pointer" }}
-              onClick={() => window.open(CONFIG.INSTAGRAM_LINK)}
-            />
             <FaTwitter
               size={25}
               color={"#fff"}

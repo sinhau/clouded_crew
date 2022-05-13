@@ -1,11 +1,11 @@
 {
-  "CONTRACT_ADDRESS": "0x98c695cA013874ED54D76a1eb6a0F96BF2A802a5",
-  "SCAN_LINK": "https://rinkeby.etherscan.io/address/0x98c695cA013874ED54D76a1eb6a0F96BF2A802a5",
-  "ERROR_CHECK_LINK": "https://rinkeby.etherscan.io/tx",
+  "CONTRACT_ADDRESS": "0x4cF2F3725f48AA0c0C2AC72378162D2725a52d6f",
+  "SCAN_LINK": "https://etherscan.io/address/0x4cF2F3725f48AA0c0C2AC72378162D2725a52d6f",
+  "ERROR_CHECK_LINK": "https://etherscan.io/tx",
   "NETWORK": {
-    "NAME": "Rinkeby",
+    "NAME": "Ethereum",
     "SYMBOL": "ETH",
-    "ID": 4
+    "ID": 1
   },
   "NFT_NAME": "Clouded Crew",
   "SYMBOL": "NFT",
@@ -17,8 +17,7 @@
   "DISPLAY_COST": 0.0333,
   "GAS_LIMIT": 210000,
   "MARKETPLACE": "Opeansea",
-  "MARKETPLACE_LINK": "https://testnets.opensea.io/collection/clouded-crew-z6symzcqrm",
-  "INSTAGRAM_LINK": "https://www.instagram.com/cloudedcrew/",
+  "MARKETPLACE_LINK": "https://opensea.io/collection/clouded-crew-z6symzcqrm",
   "TWITTER_LINK": "https://twitter.com/cloudedcrew",
   "DISCORD_LINK": "https://discord.com/invite/RUcuynKsxh",
   "SHOW_BACKGROUND": false
