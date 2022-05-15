@@ -45,7 +45,7 @@ contract CloudedCrew is ERC1155, Ownable {
     mapping(address => uint256) public generalSaleMintCount;
     uint256 public currentTokenID = 1;
     bytes32 public whitelist_merkle_tree_root;
-    uint256 public minting_fee = 0.0333 ether;
+    uint256 public minting_fee = 0.00333 ether;
 
     /////////////////////////////////
     /// CONSTANTS
